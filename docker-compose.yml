@@ -9,14 +9,14 @@ services:
   redis:
     image: 'bitnami/redis:latest'
     restart: always
-    hostname: redis
+    container_name: redis
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
 
   postgres:
     image: postgres
     restart: always
-    hostname: postgres
+    container_name: postgres
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
     ports: 
@@ -24,26 +24,28 @@ services:
 
   stock-api:
     image: 'ghcr.io/ozon-edu-csharp-2021/stock-api:main'
-    hostname: stock-api 
+    container_name: stock-api 
     depends_on:
       - redis
 
   employees-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/employees-service:main'
-    hostname: employees-service
+    container_name: employees-service
  
   emailing-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/emailing-service:main'
-    hostname: emailing-service
-    ports: 
-     - 9092:9092
+    container_name: emailing-service
+    # depends_on:
+    #   - kafka
 
+  #TODO: образ монтируется с ошибками  
   supply-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/supply-service:main'
-    hostname: supply-service
+    container_name: supply-service
     depends_on:
       - postgres
-      # - kafka
+      #- kafka
+
 
 
 
