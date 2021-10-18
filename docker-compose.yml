@@ -1,35 +1,49 @@
-version: '3.7'
+version: '3.8'
 
 services:
   merch-api:
     image: merch-api
     build: MerchandiseService/
     hostname: merch-api
-    ports:
-      - "5000:80"
+
+  redis:
+    image: 'bitnami/redis:latest'
+    restart: always
+    hostname: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  postgres:
+    image: postgres
+    restart: always
+    hostname: postgres
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports: 
+      - 5432:5432
 
   stock-api:
     image: 'ghcr.io/ozon-edu-csharp-2021/stock-api:main'
-    ports:
-      - "5001:80"
+    hostname: stock-api 
     depends_on:
       - redis
-  
-  redis:
-    image: redis
 
+  employees-service:
+    image: 'ghcr.io/ozon-edu-csharp-2021/employees-service:main'
+    hostname: employees-service
+ 
   emailing-service:
-     image: 'ghcr.io/ozon-edu-csharp-2021/emailing-service:main'
-     ports:
-      - "5002:80"
+    image: 'ghcr.io/ozon-edu-csharp-2021/emailing-service:main'
+    hostname: emailing-service
+    ports: 
+     - 9092:9092
 
   supply-service:
-     image: 'ghcr.io/ozon-edu-csharp-2021/supply-service:main'
-     ports:
-      - "5003:80"
-         
-  employees-service:
-     image: 'ghcr.io/ozon-edu-csharp-2021/employees-service:main'
-     ports:
-      - "5004:80"
+    image: 'ghcr.io/ozon-edu-csharp-2021/supply-service:main'
+    hostname: supply-service
+    depends_on:
+      - postgres
+      # - kafka
+
+
 
