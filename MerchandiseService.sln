@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{0225B7
 ProjectSection(SolutionItems) = preProject
 	Dockerfile = Dockerfile
 	README.md = README.md
-	..\.gitignore = ..\.gitignore
+	.gitignore = .gitignore
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{025C5CDF-8881-4AE1-9AF1-EB1B47471464}"
