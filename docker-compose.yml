@@ -6,27 +6,9 @@ services:
     build: MerchandiseService/
     hostname: merch-api
 
-  redis:
-    image: 'bitnami/redis:latest'
-    restart: always
-    container_name: redis
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-
-  postgres:
-    image: postgres
-    restart: always
-    container_name: postgres
-    environment:
-      - POSTGRES_HOST_AUTH_METHOD=trust
-    ports: 
-      - 5432:5432
-
   stock-api:
     image: 'ghcr.io/ozon-edu-csharp-2021/stock-api:main'
     container_name: stock-api 
-    depends_on:
-      - redis
 
   employees-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/employees-service:main'
@@ -35,16 +17,11 @@ services:
   emailing-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/emailing-service:main'
     container_name: emailing-service
-    # depends_on:
-    #   - kafka
 
-  #TODO: образ монтируется с ошибками  
   supply-service:
     image: 'ghcr.io/ozon-edu-csharp-2021/supply-service:main'
     container_name: supply-service
-    depends_on:
-      - postgres
-      #- kafka
+
 
 
 
