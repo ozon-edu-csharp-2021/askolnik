@@ -50,7 +50,7 @@ namespace MerchApi.Infrastructure.Extensions
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     c.IncludeXmlComments(xmlPath);
 
-                    c.OperationFilter<HeaderOperationFilter>();
+                    // c.OperationFilter<HeaderOperationFilter>();
                 });
             });
 

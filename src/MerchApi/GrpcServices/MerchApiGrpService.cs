@@ -1,12 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-
-using Google.Protobuf.WellKnownTypes;
+﻿using System.Threading.Tasks;
 
 using Grpc.Core;
 
 using MerchApi.Grpc;
-using MerchApi.Models;
 using MerchApi.Services;
 
 namespace MerchApi.GrpcServices

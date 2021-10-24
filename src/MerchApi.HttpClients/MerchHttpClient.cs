@@ -1,15 +1,14 @@
-﻿using System.Threading.Tasks;
-using System.Net.Http;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 
-using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
 
 namespace MerchApi.HttpClients
 {
     public interface IMerchHttpClient
     {
-        Task<GetMerchPackResponse> GetMerchPack(GetMerchPackRequest request);
-        Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(GetMerchDeliveryInfoRequest request);
+        Task<GetMerchPackResponse> GetMerchPack(long id);
+        Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(long id);
     }
 
     public class MerchHttpClient : IMerchHttpClient
@@ -21,12 +20,12 @@ namespace MerchApi.HttpClients
             _httpClient = httpClient;
         }
 
-        public Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(GetMerchDeliveryInfoRequest request)
+        public Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(long id)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<GetMerchPackResponse> GetMerchPack(GetMerchPackRequest request)
+        public Task<GetMerchPackResponse> GetMerchPack(long id)
         {
             throw new System.NotImplementedException();
         }

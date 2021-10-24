@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
+using MerchApi.Http.Models;
 using MerchApi.Http.Responses;
-using MerchApi.Models;
+
+using Microsoft.Extensions.Logging;
 
 namespace MerchApi.Services.Implementation
 {
@@ -10,14 +13,32 @@ namespace MerchApi.Services.Implementation
     /// </summary>
     public class MerchService : IMerchService
     {
-        public Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(MerchDeliveryInfo request)
+        private readonly ILogger _logger;
+
+        public MerchService(ILoggerFactory loggerFactory)
         {
-            throw new System.NotImplementedException();
+            _logger = loggerFactory.CreateLogger<MerchService>();
         }
 
-        public Task<GetMerchPackResponse> GetMerchPack(MerchPackDto request)
+
+        public Task<GetMerchPackResponse> GetMerchPack(long id)
         {
-            throw new System.NotImplementedException();
+            _logger.LogDebug("Получаем мерч");
+            throw new NotImplementedException();
+        }
+
+        public Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(long id)
+        {
+            _logger.LogDebug("Получаем информацию о выдаче мерча");
+
+            return Task.FromResult(new GetMerchDeliveryInfoResponse()
+            {
+                MerchDeliveryInfo = new GetMerchDeliveryInfoResponseUnit
+                {
+                    Id = id,
+                    DeliveryDate = DateTime.UtcNow
+                }
+            });
         }
     }
 }
