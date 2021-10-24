@@ -1,3 +1,5 @@
+using MerchApi.Infrastructure.Extensions;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -15,6 +17,8 @@ namespace MerchandiseService
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .AddInfrastructure()
+                .AddGlobalExceptionFilter();
     }
 }

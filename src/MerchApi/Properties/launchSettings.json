@@ -1,8 +1,9 @@
 {
   "profiles": {
-    "MerchandiseService": {
+    "MerchApi": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
