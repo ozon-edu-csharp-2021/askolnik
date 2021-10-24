@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using CSharpFunctionalExtensions;
+
 using MerchApi.Http.Models;
 using MerchApi.Http.Responses;
 
@@ -15,30 +17,33 @@ namespace MerchApi.Services.Implementation
     {
         private readonly ILogger _logger;
 
-        public MerchService(ILoggerFactory loggerFactory)
+        public MerchService(ILogger<MerchService> logger)
         {
-            _logger = loggerFactory.CreateLogger<MerchService>();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-
-        public Task<GetMerchPackResponse> GetMerchPack(long id)
+        public Task<Maybe<GetMerchPackResponse>> GetMerchPack(long id)
         {
-            _logger.LogDebug("Получаем мерч");
+            _logger.LogDebug("Получаем мерч...");
             throw new NotImplementedException();
         }
 
-        public Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(long id)
+        public Task<Maybe<GetMerchDeliveryInfoResponse>> GetMerchDeliveryInfo(long id)
         {
-            _logger.LogDebug("Получаем информацию о выдаче мерча");
+            _logger.LogDebug("Получаем информацию о выдаче мерча...");
 
-            return Task.FromResult(new GetMerchDeliveryInfoResponse()
-            {
-                MerchDeliveryInfo = new GetMerchDeliveryInfoResponseUnit
+            var result = id != 0
+                ? Maybe<GetMerchDeliveryInfoResponse>.From(new GetMerchDeliveryInfoResponse
                 {
-                    Id = id,
-                    DeliveryDate = DateTime.UtcNow
-                }
-            });
+                    MerchDeliveryInfo = new GetMerchDeliveryInfoResponseUnit
+                    {
+                        Id = 1,
+                        DeliveryDate = DateTime.UtcNow
+                    }
+                })
+                : Maybe<GetMerchDeliveryInfoResponse>.None;
+
+            return Task.FromResult(result);
         }
     }
 }

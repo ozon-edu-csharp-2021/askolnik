@@ -1,7 +1,7 @@
 ﻿using System;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-
 
 namespace MerchApi.Infrastructure.StartupFilters
 {

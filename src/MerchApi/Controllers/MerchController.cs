@@ -24,12 +24,12 @@ namespace MerchApi.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="loggerFactory"></param>
+        /// <param name="logger"></param>
         /// <param name="merchService"></param>
         /// <exception cref="ArgumentNullException"></exception>
-        public MerchController(ILoggerFactory loggerFactory, IMerchService merchService)
+        public MerchController(ILogger<MerchController> logger, IMerchService merchService)
         {
-            _logger = loggerFactory.CreateLogger<MerchController>();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _merchService = merchService ?? throw new ArgumentNullException(nameof(merchService));
         }
 
@@ -40,13 +40,11 @@ namespace MerchApi.Controllers
         /// <response code="200">Request is accepted</response>            
         /// <response code="400">Invalid request</response>                                                             
         /// <response code="404">Not Found</response>                                                            
-        /// <response code="500">Internal Server Error</response>                                          
-        /// <response code="503">Service Unavailable</response>                                          
+        /// <response code="500">Internal Server Error</response>                                        
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [ProducesResponseType(503)]
         [HttpGet("{id:long}")]
         public async Task<ActionResult<GetMerchPackResponse>> GetMerchPack([FromRoute][Required] long id)
         {
@@ -74,11 +72,11 @@ namespace MerchApi.Controllers
         [HttpGet("{id:long}/delivery")]
         public async Task<ActionResult<GetMerchPackResponse>> GetMerchDeliveryInfo([FromRoute][Required] long id)
         {
-            _logger.LogInformation($"Поступил запрос на получения мерча");
+            _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча");
 
             var response = await _merchService.GetMerchDeliveryInfo(id);
 
-            return Ok(response);
+            return response.HasValue ? Ok(response) : NotFound();
         }
     }
 }

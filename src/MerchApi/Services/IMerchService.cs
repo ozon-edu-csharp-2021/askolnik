@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 
+using CSharpFunctionalExtensions;
+
 using MerchApi.Http.Responses;
 
 namespace MerchApi.Services
@@ -9,7 +11,7 @@ namespace MerchApi.Services
     /// </summary>
     public interface IMerchService
     {
-        Task<GetMerchPackResponse> GetMerchPack(long id);
-        Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(long id);
+        Task<Maybe<GetMerchPackResponse>> GetMerchPack(long id);
+        Task<Maybe<GetMerchDeliveryInfoResponse>> GetMerchDeliveryInfo(long id);
     }
 }
