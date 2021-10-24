@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace MerchApi.Infrastructure.Middlewares
 {
     /// <summary>
-    /// 
+    /// Будет логгировать request поступающих http запросов, выводя при этом заголовки и route, по которому прошел запрос. Grpc запросы в этих middleware компонентах необходимо исключить.
     /// </summary>
     public class RequestLoggingMiddleware
     {
@@ -31,18 +31,12 @@ namespace MerchApi.Infrastructure.Middlewares
         {
             try
             {
-                if (context.Request.ContentLength > 0)
+                if (context.Request.ContentType == "application/grpc" && context.Request.Protocol == "HTTP/2")
                 {
-                    context.Request.EnableBuffering();
-
-                    var buffer = new byte[context.Request.ContentLength.Value];
-                    await context.Request.Body.ReadAsync(buffer, 0, buffer.Length);
-                    var bodyAsText = Encoding.UTF8.GetString(buffer);
-                    _logger.LogInformation("Request logged");
-                    _logger.LogInformation(bodyAsText);
-
-                    context.Request.Body.Position = 0;
+                    return;
                 }
+
+                _logger.LogInformation($"[{nameof(RequestLoggingMiddleware)}] -> RequestMethod = '{context.Request.Method}', RequestPath = '{context.Request.Path}', Headers = '{JsonSerializer.Serialize(context.Request.Headers)}'");
             }
             catch (Exception e)
             {

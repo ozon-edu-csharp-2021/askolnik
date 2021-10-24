@@ -22,6 +22,7 @@ namespace MerchApi.Infrastructure.StartupFilters
                 app.Map("/live", builder => builder.UseMiddleware<LiveMiddleware>());
 
                 app.UseMiddleware<RequestLoggingMiddleware>();
+                app.UseMiddleware<ResponseLoggingMiddleware>();
                 next(app);
             };
         }

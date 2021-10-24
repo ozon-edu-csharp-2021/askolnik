@@ -1,10 +1,13 @@
-﻿using System.Reflection;
+﻿using System.Net;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
 
 namespace MerchApi.Infrastructure.Middlewares
 {
+    /// <summary>
+    /// возвращать по пути "/ready" ответ 200 Ok.
+    /// </summary>
     public class ReadyMiddleware
     {
         public ReadyMiddleware(RequestDelegate next)
@@ -13,8 +16,9 @@ namespace MerchApi.Infrastructure.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "no version";
-            await context.Response.WriteAsync(version);
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+
+            await Task.CompletedTask;
         }
     }
 }

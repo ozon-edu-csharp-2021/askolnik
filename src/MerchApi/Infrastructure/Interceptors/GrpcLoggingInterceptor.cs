@@ -34,13 +34,11 @@ namespace MerchApi.Infrastructure.Interceptors
             ServerCallContext context,
             UnaryServerMethod<TRequest, TResponse> continuation)
         {
-            var requestJson = JsonSerializer.Serialize(request);
-            _logger.LogInformation(requestJson);
+            _logger.LogInformation($"[{nameof(GrpcLoggingInterceptor)}] -> {JsonSerializer.Serialize(request)}");
 
             var response = base.UnaryServerHandler(request, context, continuation);
 
-            var responseJson = JsonSerializer.Serialize(response);
-            _logger.LogInformation(responseJson);
+            _logger.LogInformation($"[{nameof(GrpcLoggingInterceptor)}] -> {JsonSerializer.Serialize(response)}");
 
             return response;
         }
