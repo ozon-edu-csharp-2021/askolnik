@@ -10,9 +10,6 @@ using Microsoft.Extensions.Logging;
 
 namespace MerchApi.Controllers
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [Route("api/merches")]
     [Produces("application/json")]
     [ApiController]
@@ -21,12 +18,6 @@ namespace MerchApi.Controllers
         private readonly ILogger _logger;
         private readonly IMerchService _merchService;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="logger"></param>
-        /// <param name="merchService"></param>
-        /// <exception cref="ArgumentNullException"></exception>
         public MerchController(ILogger<MerchController> logger, IMerchService merchService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

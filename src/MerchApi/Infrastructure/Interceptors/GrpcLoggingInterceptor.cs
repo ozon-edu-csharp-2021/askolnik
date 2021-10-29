@@ -8,9 +8,6 @@ using Microsoft.Extensions.Logging;
 
 namespace MerchApi.Infrastructure.Interceptors
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class GrpcLoggingInterceptor : Interceptor
     {
         private readonly ILogger<GrpcLoggingInterceptor> _logger;

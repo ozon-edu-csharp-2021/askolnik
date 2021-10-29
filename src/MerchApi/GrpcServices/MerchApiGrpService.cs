@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 
+using Google.Protobuf.WellKnownTypes;
+
 using Grpc.Core;
 
 using MerchApi.Grpc;
@@ -7,9 +9,6 @@ using MerchApi.Services;
 
 namespace MerchApi.GrpcServices
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class MerchApiGrpService : MerchApiGrpc.MerchApiGrpcBase
     {
         private readonly IMerchService _merchService;
@@ -26,22 +25,29 @@ namespace MerchApi.GrpcServices
             return response.HasValue
                 ? new GetMerchDeliveryInfoResponse()
                 {
-                    MerchDeliveryInfo = new GetMerchDeliveryInfoResponseUnit
+                    MerchDeliveryInfo = new()
                     {
                         Id = response.Value.MerchDeliveryInfo.Id,
-                        DeliveryDate = new Google.Protobuf.WellKnownTypes.Timestamp()
-                        {
-                            Seconds = response.Value.MerchDeliveryInfo.DeliveryDate.ToBinary()
-                        }
+                        DeliveryDate = response.Value.MerchDeliveryInfo.DeliveryDate.ToTimestamp()
                     }
                 }
                 : await base.GetMerchDeliveryInfo(request, context);
         }
 
-        public override Task<GetMerchPackResponse> GetMerchPack(GetMerchPackRequest request, ServerCallContext context)
+        public override async Task<GetMerchPackResponse> GetMerchPack(GetMerchPackRequest request, ServerCallContext context)
         {
+            var response = await _merchService.GetMerchPack(request.Id);
 
-            return base.GetMerchPack(request, context);
+            return response.HasValue
+                ? new GetMerchPackResponse()
+                {
+                    MerchPack = new()
+                    {
+                        Id = response.Value.MerchPack.Id,
+                        Name = response.Value.MerchPack.Name
+                    }
+                }
+                : await base.GetMerchPack(request, context);
         }
     }
 }

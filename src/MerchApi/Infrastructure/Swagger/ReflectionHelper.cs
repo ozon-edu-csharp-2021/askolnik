@@ -4,9 +4,6 @@ using System.Reflection;
 
 namespace MerchApi.Infrastructure.Swagger
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public static class ReflectionHelper
     {
         public static string? AttributeReader<TAttr>(IEnumerable<CustomAttributeData> attributes)

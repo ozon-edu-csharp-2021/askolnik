@@ -10,9 +10,6 @@ using Microsoft.Extensions.Logging;
 
 namespace MerchApi.Services.Implementation
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class MerchService : IMerchService
     {
         private readonly ILogger _logger;
@@ -25,6 +22,8 @@ namespace MerchApi.Services.Implementation
         public Task<Maybe<GetMerchPackResponse>> GetMerchPack(long id)
         {
             _logger.LogDebug("Получаем мерч...");
+
+            // Для того, чтобы проверить логгирование ошибок, кинем тут исключение
             throw new NotImplementedException();
         }
 

@@ -2,8 +2,6 @@
 option csharp_namespace = "MerchApi.Grpc";
 package MerchApi;
 
-import "google/protobuf/empty.proto";
-import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
 service MerchApiGrpc {
