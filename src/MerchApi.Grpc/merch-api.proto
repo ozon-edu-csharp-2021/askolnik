@@ -1,0 +1,36 @@
+﻿syntax = "proto3";
+option csharp_namespace = "MerchApi.Grpc";
+package MerchApi;
+
+import "google/protobuf/timestamp.proto";
+
+service MerchApiGrpc {
+  rpc GetMerchPack (GetMerchPackRequest) returns (GetMerchPackResponse);
+  rpc GetMerchDeliveryInfo (GetMerchDeliveryInfoRequest) returns (GetMerchDeliveryInfoResponse);
+}
+
+message GetMerchPackRequest {
+	int64 id = 1;
+}
+
+message GetMerchPackResponse {
+	GetMerchPackResponseUnit merchPack = 1;
+}
+
+message GetMerchPackResponseUnit {
+	int64 id = 1;
+	string name = 2;
+}
+
+message GetMerchDeliveryInfoRequest {
+	int64 id = 1;
+}
+
+message GetMerchDeliveryInfoResponse {
+	GetMerchDeliveryInfoResponseUnit merchDeliveryInfo = 1;
+}
+
+message GetMerchDeliveryInfoResponseUnit {
+	int64 id = 1;
+	google.protobuf.Timestamp deliveryDate = 2;
+}

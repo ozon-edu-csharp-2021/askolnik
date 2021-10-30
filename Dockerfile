@@ -4,16 +4,16 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["src/MerchandiseService/MerchandiseService.csproj", "src/MerchandiseService/"]
-RUN dotnet restore "src/MerchandiseService/MerchandiseService.csproj"
+COPY ["src/MerchApi/MerchApi.csproj", "src/MerchApi/"]
+RUN dotnet restore "src/MerchApi/MerchApi.csproj"
 COPY . .
-WORKDIR "/src/src/MerchandiseService"
-RUN dotnet build "MerchandiseService.csproj" -c Release -o /app/build
+WORKDIR "/src/src/MerchApi"
+RUN dotnet build "MerchApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "MerchandiseService.csproj" -c Release -o /app/publish
+RUN dotnet publish "MerchApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MerchandiseService.dll"]
+ENTRYPOINT ["dotnet", "MerchApi.dll"]
