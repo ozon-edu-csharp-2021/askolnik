@@ -23,11 +23,11 @@ namespace MerchApi.Infrastructure.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            await LogRequest(context);
+            LogRequest(context);
             await _next(context);
         }
 
-        private async Task LogRequest(HttpContext context)
+        private void LogRequest(HttpContext context)
         {
             try
             {

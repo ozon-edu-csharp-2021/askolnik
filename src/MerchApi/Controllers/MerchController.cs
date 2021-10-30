@@ -27,11 +27,11 @@ namespace MerchApi.Controllers
         /// <summary>
         /// Метод возвращает мерч по id
         /// </summary>
-        /// <returns>OfferDtoList</returns>
-        /// <response code="200">Request is accepted</response>            
-        /// <response code="400">Invalid request</response>                                                             
-        /// <response code="404">Not Found</response>                                                            
-        /// <response code="500">Internal Server Error</response>                                        
+        /// <returns>GetMerchPackResponse</returns>
+        /// <response code="200">Request is accepted</response>
+        /// <response code="400">Invalid request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -49,17 +49,15 @@ namespace MerchApi.Controllers
         /// <summary>
         /// Метод возвращает мерч по id
         /// </summary>
-        /// <returns>OfferDtoList</returns>
-        /// <response code="200">Request is accepted</response>            
-        /// <response code="400">Invalid request</response>                                                             
-        /// <response code="404">Not Found</response>                                                            
-        /// <response code="500">Internal Server Error</response>                                          
-        /// <response code="503">Service Unavailable</response>                                          
+        /// <returns>GetMerchPackResponse</returns>
+        /// <response code="200">Request is accepted</response>
+        /// <response code="400">Invalid request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [ProducesResponseType(503)]
         [HttpGet("{id:long}/delivery")]
         public async Task<ActionResult<GetMerchPackResponse>> GetMerchDeliveryInfo([FromRoute][Required] long id)
         {
