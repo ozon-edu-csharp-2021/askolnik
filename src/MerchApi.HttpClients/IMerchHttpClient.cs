@@ -6,7 +6,7 @@ namespace MerchApi.HttpClients
 {
     public interface IMerchHttpClient
     {
-        Task<GetMerchPackResponse> GetMerchPack(long id);
+        Task<MerchGiveOutRequestResponse> GetMerchPack(long id);
         Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(long id);
     }
 }

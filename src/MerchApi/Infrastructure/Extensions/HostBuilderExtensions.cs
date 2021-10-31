@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 
+using MediatR;
+
 using MerchApi.Infrastructure.Filters;
 using MerchApi.Infrastructure.StartupFilters;
 using MerchApi.Infrastructure.Swagger;
@@ -27,12 +29,16 @@ namespace MerchApi.Infrastructure.Extensions
         {
             builder.ConfigureServices(services =>
             {
+                var domainAssembly = Assembly.GetExecutingAssembly();
+                // Add MediatR
+                services.AddMediatR(domainAssembly);
+                // Add filters
                 services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
 
                 services.AddSwaggerGen(c =>
                 {
-                    var attributes = Assembly.GetExecutingAssembly().CustomAttributes;
+                    var attributes = domainAssembly.CustomAttributes;
                     var swaggerDocVersion = ReflectionHelper.AttributeReader<AssemblyVersionAttribute>(attributes) ?? ReflectionHelper.AttributeReader<AssemblyFileVersionAttribute>(attributes);
                     var swaggerDocTitle = ReflectionHelper.AttributeReader<AssemblyTitleAttribute>(attributes);
                     var swaggerDocDescription = ReflectionHelper.AttributeReader<AssemblyDescriptionAttribute>(attributes);
@@ -46,7 +52,7 @@ namespace MerchApi.Infrastructure.Extensions
 
                     c.CustomSchemaIds(x => x.FullName);
 
-                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlFile = $"{domainAssembly.GetName().Name}.xml";
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     c.IncludeXmlComments(xmlPath);
                 });

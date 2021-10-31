@@ -5,32 +5,32 @@ package MerchApi;
 import "google/protobuf/timestamp.proto";
 
 service MerchApiGrpc {
-  rpc GetMerchPack (GetMerchPackRequest) returns (GetMerchPackResponse);
-  rpc GetMerchDeliveryInfo (GetMerchDeliveryInfoRequest) returns (GetMerchDeliveryInfoResponse);
+  rpc GetMerchAvailability (GetMerchAvailabilityRequest) returns (GetMerchAvailabilityResponse);
+  rpc GiveOutMerch (GiveOutMerchRequest) returns (GiveOutMerchResponse);
 }
 
-message GetMerchPackRequest {
+message GetMerchAvailabilityRequest {
 	int64 id = 1;
 }
 
-message GetMerchPackResponse {
-	GetMerchPackResponseUnit merchPack = 1;
+message GetMerchAvailabilityResponse {
+	GetMerchAvailabilityResponseUnit merchAvailabilityInfo = 1;
 }
 
-message GetMerchPackResponseUnit {
+message GetMerchAvailabilityResponseUnit {
 	int64 id = 1;
 	string name = 2;
+	google.protobuf.Timestamp receiptDate = 3;
 }
 
-message GetMerchDeliveryInfoRequest {
+message GiveOutMerchRequest {
 	int64 id = 1;
 }
 
-message GetMerchDeliveryInfoResponse {
-	GetMerchDeliveryInfoResponseUnit merchDeliveryInfo = 1;
+message GiveOutMerchResponse {
+	GiveOutMerchResponseUnit merch = 1;
 }
 
-message GetMerchDeliveryInfoResponseUnit {
+message GiveOutMerchResponseUnit {
 	int64 id = 1;
-	google.protobuf.Timestamp deliveryDate = 2;
 }

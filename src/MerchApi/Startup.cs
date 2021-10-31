@@ -1,7 +1,5 @@
 using MerchApi.GrpcServices;
 using MerchApi.Infrastructure.Interceptors;
-using MerchApi.Services;
-using MerchApi.Services.Implementation;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +20,6 @@ namespace MerchandiseService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IMerchService, MerchService>();
             services.AddGrpc(options => options.Interceptors.Add<GrpcLoggingInterceptor>());
         }
 

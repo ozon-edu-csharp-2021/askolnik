@@ -2,8 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
+using MediatR;
+
+using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
-using MerchApi.Services;
+using MerchApi.Infrastructure.Commands;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,16 +19,18 @@ namespace MerchApi.Controllers
     public class MerchController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IMerchService _merchService;
+        private readonly IMediator _mediator;
 
-        public MerchController(ILogger<MerchController> logger, IMerchService merchService)
+        public MerchController(
+            ILogger<MerchController> logger,
+            IMediator mediator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _merchService = merchService ?? throw new ArgumentNullException(nameof(merchService));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         /// <summary>
-        /// Метод возвращает мерч по id
+        /// Запрос на выдачу мерча
         /// </summary>
         /// <returns>GetMerchPackResponse</returns>
         /// <response code="200">Request is accepted</response>
@@ -36,18 +41,18 @@ namespace MerchApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [HttpGet("{id:long}")]
-        public async Task<ActionResult<GetMerchPackResponse>> GetMerchPack([FromRoute][Required] long id)
+        [HttpPost]
+        public async Task<ActionResult<MerchGiveOutRequestResponse>> GetMerchPack([FromBody][Required] MerchGiveOutRequest request)
         {
-            _logger.LogInformation($"Поступил запрос на получения мерча");
+            _logger.LogInformation($"Поступил запрос на выдачу мерча");
 
-            var response = await _merchService.GetMerchPack(id);
+            var response = await _mediator.Send(new MerchGiveOutCommand(request));
 
             return Ok(response);
         }
 
         /// <summary>
-        /// Метод возвращает мерч по id
+        /// Метод возвращает информацию о выдаче мерча по id
         /// </summary>
         /// <returns>GetMerchPackResponse</returns>
         /// <response code="200">Request is accepted</response>
@@ -59,13 +64,13 @@ namespace MerchApi.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpGet("{id:long}/delivery")]
-        public async Task<ActionResult<GetMerchPackResponse>> GetMerchDeliveryInfo([FromRoute][Required] long id)
+        public async Task<ActionResult<MerchGiveOutRequestResponse>> GetMerchDeliveryInfo([FromRoute][Required] long id)
         {
             _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча");
 
-            var response = await _merchService.GetMerchDeliveryInfo(id);
+            var response = await _mediator.Send(new GetMerchDeliveryInfoCommand(id));
 
-            return response.HasValue ? Ok(response) : NotFound();
+            return Ok(response);
         }
     }
 }
