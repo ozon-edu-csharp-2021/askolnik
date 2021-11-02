@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
 using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
-using MerchApi.Infrastructure.Commands;
+using MerchApi.Infrastructure.Commands.MerchAggregate;
+using MerchApi.Infrastructure.Queries.MerchAggregate;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -42,17 +44,18 @@ namespace MerchApi.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpPost]
-        public async Task<ActionResult<MerchGiveOutRequestResponse>> GetMerchPack([FromBody][Required] MerchGiveOutRequest request)
+        public async Task<ActionResult<GiveOutMerchRequestResponse>> GiveOutMerch([FromBody][Required] GiveOutMerchRequest request, CancellationToken token)
         {
             _logger.LogInformation($"Поступил запрос на выдачу мерча");
 
-            var response = await _mediator.Send(new MerchGiveOutCommand(request));
+            var command = new GiveOutMerchCommand(request);
+            var response = await _mediator.Send(command, token);
 
             return Ok(response);
         }
 
         /// <summary>
-        /// Метод возвращает информацию о выдаче мерча по id
+        /// Метод возвращает информацию о выдаче мерча по id сотрудника
         /// </summary>
         /// <returns>GetMerchPackResponse</returns>
         /// <response code="200">Request is accepted</response>
@@ -64,11 +67,13 @@ namespace MerchApi.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpGet("{id:long}/delivery")]
-        public async Task<ActionResult<MerchGiveOutRequestResponse>> GetMerchDeliveryInfo([FromRoute][Required] long id)
+        public async Task<ActionResult<GiveOutMerchRequestResponse>> GetMerchDeliveryInfo([FromRoute][Required] long id, CancellationToken token)
         {
             _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча");
 
-            var response = await _mediator.Send(new GetMerchDeliveryInfoCommand(id));
+            var query = new GetMerchIssueCommand(id);
+
+            var response = await _mediator.Send(query, token);
 
             return Ok(response);
         }

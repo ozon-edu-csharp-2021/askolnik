@@ -6,13 +6,13 @@ using MediatR;
 
 using MerchApi.Http.Models;
 using MerchApi.Http.Responses;
-using MerchApi.Infrastructure.Commands;
+using MerchApi.Infrastructure.Commands.MerchAggregate;
 
 using Microsoft.Extensions.Logging;
 
-namespace MerchApi.Infrastructure.Handlers
+namespace MerchApi.Infrastructure.Handlers.MerchAggregate
 {
-    public class MerchGiveOutCommandHandler : IRequestHandler<MerchGiveOutCommand, MerchGiveOutRequestResponse>
+    public class MerchGiveOutCommandHandler : IRequestHandler<GiveOutMerchCommand, GiveOutMerchRequestResponse>
     {
         private readonly ILogger<MerchGiveOutCommandHandler> _logger;
 
@@ -21,11 +21,11 @@ namespace MerchApi.Infrastructure.Handlers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<MerchGiveOutRequestResponse> Handle(MerchGiveOutCommand request, CancellationToken cancellationToken)
+        public async Task<GiveOutMerchRequestResponse> Handle(GiveOutMerchCommand request, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"[{nameof(MerchGiveOutCommandHandler)}] Обработка запроса на выдачу мерча");
 
-            return await Task.FromResult(new MerchGiveOutRequestResponse(new GetMerchPackResponseUnit("Short", 1)));
+            return await Task.FromResult(new GiveOutMerchRequestResponse(new GetMerchPackResponseUnit("Short", 1)));
         }
     }
 }

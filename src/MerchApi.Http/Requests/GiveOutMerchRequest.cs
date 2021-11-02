@@ -1,6 +1,6 @@
 ﻿namespace MerchApi.Http.Requests
 {
-    public class MerchGiveOutRequest
+    public class GiveOutMerchRequest
     {
         public int EmployeeId { get; set; }
     }

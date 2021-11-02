@@ -2,11 +2,11 @@
 
 namespace MerchApi.Http.Responses
 {
-    public class MerchGiveOutRequestResponse
+    public class GiveOutMerchRequestResponse
     {
         public GetMerchPackResponseUnit MerchPack { get; set; }
 
-        public MerchGiveOutRequestResponse(GetMerchPackResponseUnit merchPack)
+        public GiveOutMerchRequestResponse(GetMerchPackResponseUnit merchPack)
         {
             MerchPack = merchPack;
         }

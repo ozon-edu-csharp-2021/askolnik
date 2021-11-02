@@ -1,18 +1,33 @@
-﻿namespace MerchApi.Domain.SharedKernel.Interfaces
-{
-    public interface IRepository<T> where T : class, IAggregateRoot
-    {
-      
-    }
+﻿using System.Threading;
+using System.Threading.Tasks;
 
-    // generic methods approach option
-    //public interface IRepository
-    //{
-    //    Task<T> GetByIdAsync<T>(int id) where T : BaseEntity, IAggregateRoot;
-    //    Task<List<T>> ListAsync<T>() where T : BaseEntity, IAggregateRoot;
-    //    Task<List<T>> ListAsync<T>(ISpecification<T> spec) where T : BaseEntity, IAggregateRoot;
-    //    Task<T> AddAsync<T>(T entity) where T : BaseEntity, IAggregateRoot;
-    //    Task UpdateAsync<T>(T entity) where T : BaseEntity, IAggregateRoot;
-    //    Task DeleteAsync<T>(T entity) where T : BaseEntity, IAggregateRoot;
-    //}
+namespace MerchApi.Domain.SharedKernel.Interfaces
+{
+    /// <summary>
+    /// Базовый интерфейс репозитория
+    /// </summary>
+    /// <typeparam name="TAggregationRoot">Объект сущности для управления</typeparam>
+    public interface IRepository<TAggregationRoot>
+    {
+        /// <summary>
+        /// Объект <see cref="IUnitOfWork"/>
+        /// </summary>
+        IUnitOfWork UnitOfWork { get; }
+
+        /// <summary>
+        /// Создать новую сущность
+        /// </summary>
+        /// <param name="itemToCreate">Объект для создания</param>
+        /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
+        /// <returns>Созданная сущность</returns>
+        Task<TAggregationRoot> CreateAsync(TAggregationRoot itemToCreate, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Обновить существующую сущность
+        /// </summary>
+        /// <param name="itemToUpdate">Объект для создания</param>
+        /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
+        /// <returns>Обновленная сущность сущность</returns>
+        Task<TAggregationRoot> UpdateAsync(TAggregationRoot itemToUpdate, CancellationToken cancellationToken = default);
+    }
 }

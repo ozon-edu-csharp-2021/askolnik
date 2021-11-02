@@ -19,7 +19,7 @@ namespace MerchApi.HttpClients.Implementation
             throw new System.NotImplementedException();
         }
 
-        public Task<MerchGiveOutRequestResponse> GetMerchPack(long id)
+        public Task<GiveOutMerchRequestResponse> GetMerchPack(long id)
         {
             throw new System.NotImplementedException();
         }

@@ -6,13 +6,13 @@ using MediatR;
 
 using MerchApi.Http.Models;
 using MerchApi.Http.Responses;
-using MerchApi.Infrastructure.Commands;
+using MerchApi.Infrastructure.Queries.MerchAggregate;
 
 using Microsoft.Extensions.Logging;
 
-namespace MerchApi.Infrastructure.Handlers
+namespace MerchApi.Infrastructure.Handlers.MerchAggregate
 {
-    public class GetMerchDeliveryInfoCommandHandler : IRequestHandler<GetMerchDeliveryInfoCommand, GetMerchDeliveryInfoResponse>
+    public class GetMerchDeliveryInfoCommandHandler : IRequestHandler<GetMerchIssueCommand, GetMerchDeliveryInfoResponse>
     {
         private readonly ILogger<GetMerchDeliveryInfoCommandHandler> _logger;
 
@@ -21,7 +21,7 @@ namespace MerchApi.Infrastructure.Handlers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<GetMerchDeliveryInfoResponse> Handle(GetMerchDeliveryInfoCommand request, CancellationToken cancellationToken)
+        public async Task<GetMerchDeliveryInfoResponse> Handle(GetMerchIssueCommand request, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"[{nameof(GetMerchDeliveryInfoCommandHandler)}] Проверка, выдавалсяли мерч");
 

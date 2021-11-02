@@ -10,8 +10,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="AggregationModels\" />
-		<Folder Include="Contracts\" />
+		<Folder Include="AggregationModels\EmployeeAggregate\" />
 		<Folder Include="Events\" />
 		<Folder Include="Exceptions\" />
 	</ItemGroup>

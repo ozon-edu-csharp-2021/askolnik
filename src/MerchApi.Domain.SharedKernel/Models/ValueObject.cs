@@ -1,4 +1,4 @@
-﻿namespace MerchApi.Domain.SharedKernel
+﻿namespace MerchApi.Domain.SharedKernel.Models
 {
     public abstract class ValueObject<T> where T : ValueObject<T>
     {

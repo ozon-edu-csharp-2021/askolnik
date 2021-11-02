@@ -1,37 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using MediatR;
 
-namespace MerchApi.Domain.SharedKernel
+namespace MerchApi.Domain.SharedKernel.Models
 {
-    // COMPATIBLE WITH ENTITY FRAMEWORK CORE (1.1 and later)
     public abstract class Entity
     {
         int? _requestedHashCode;
-        int _Id;
+        public virtual int Id { get; protected set; }
+
         private List<INotification> _domainEvents;
-        public virtual int Id
+
+        protected Entity()
         {
-            get
-            {
-                return _Id;
-            }
-            protected set
-            {
-                _Id = value;
-            }
         }
 
-        public List<INotification> DomainEvents => _domainEvents;
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+
         public void AddDomainEvent(INotification eventItem)
         {
             _domainEvents ??= new List<INotification>();
             _domainEvents.Add(eventItem);
         }
+
         public void RemoveDomainEvent(INotification eventItem)
         {
-            if (_domainEvents is null) return;
-            _domainEvents.Remove(eventItem);
+            _domainEvents?.Remove(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents?.Clear();
         }
 
         public bool IsTransient()
@@ -41,19 +41,19 @@ namespace MerchApi.Domain.SharedKernel
 
         public override bool Equals(object obj)
         {
-            if (obj == null || obj is not Entity)
+            if (obj is not Entity entity)
                 return false;
 
-            if (ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, entity))
                 return true;
 
-            if (GetType() != GetType())
+            if (GetType() != entity.GetType())
                 return false;
-            
-            if (IsTransient() || IsTransient())
+
+            if (entity.IsTransient() || IsTransient())
                 return false;
             else
-                return Id == Id;
+                return entity.Id == Id;
         }
 
         public override int GetHashCode()
@@ -61,21 +61,22 @@ namespace MerchApi.Domain.SharedKernel
             if (!IsTransient())
             {
                 if (!_requestedHashCode.HasValue)
-                    _requestedHashCode = Id.GetHashCode() ^ 31;
-                // XOR for random distribution. See:
-                // https://docs.microsoft.com/archive/blogs/ericlippert/guidelines-and-rules-for-gethashcode
+                    _requestedHashCode = HashCode.Combine(Id, 31);
+
                 return _requestedHashCode.Value;
             }
             else
                 return base.GetHashCode();
+
         }
         public static bool operator ==(Entity left, Entity right)
         {
             if (Equals(left, null))
-                return (Equals(right, null));
+                return Equals(right, null) ? true : false;
             else
                 return left.Equals(right);
         }
+
         public static bool operator !=(Entity left, Entity right)
         {
             return !(left == right);

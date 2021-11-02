@@ -11,7 +11,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\MerchApi.Domain\MerchApi.Domain.csproj" />
 	  <ProjectReference Include="..\MerchApi.Http\MerchApi.Http.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Handlers\DomainEvent\" />
 	</ItemGroup>
 
 </Project>

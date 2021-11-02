@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace MerchApi.Domain.SharedKernel
+namespace MerchApi.Domain.SharedKernel.Models
 {
     public abstract class Enumeration : IComparable
     {
@@ -37,6 +37,5 @@ namespace MerchApi.Domain.SharedKernel
 
         public int CompareTo(object other) => Id.CompareTo(((Enumeration)other).Id);
 
-        // Other utility methods ...
     }
 }
