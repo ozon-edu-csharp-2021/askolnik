@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MerchApi.Infrastructure.Handlers.MerchAggregate
 {
-    public class GetMerchDeliveryInfoCommandHandler : IRequestHandler<GetMerchIssueCommand, GetMerchDeliveryInfoResponse>
+    public class GetMerchDeliveryInfoCommandHandler : IRequestHandler<GetMerchIssueInfoCommand, GetMerchIssueInfoResponse>
     {
         private readonly ILogger<GetMerchDeliveryInfoCommandHandler> _logger;
 
@@ -21,11 +21,15 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<GetMerchDeliveryInfoResponse> Handle(GetMerchIssueCommand request, CancellationToken cancellationToken)
+        public async Task<GetMerchIssueInfoResponse> Handle(GetMerchIssueInfoCommand request, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"[{nameof(GetMerchDeliveryInfoCommandHandler)}] Проверка, выдавалсяли мерч");
 
-            return await Task.FromResult(new GetMerchDeliveryInfoResponse(new GetMerchDeliveryInfoResponseUnit(1, DateTime.UtcNow)));
+            var response = new GetMerchIssueInfoResponse();
+
+            response.IssuedMerchs.Add(new MerchIssueInfo(1, DateTime.UtcNow, Http.Enums.MerchType.WelcomePack));
+
+            return await Task.FromResult(response);
         }
     }
 }

@@ -4,11 +4,11 @@ using MerchApi.Http.Responses;
 
 namespace MerchApi.Infrastructure.Queries.MerchAggregate
 {
-    public class GetMerchIssueCommand : IRequest<GetMerchDeliveryInfoResponse>
+    public class GetMerchIssueInfoCommand : IRequest<GetMerchIssueInfoResponse>
     {
         public long MerchId { get; }
 
-        public GetMerchIssueCommand(long merchId)
+        public GetMerchIssueInfoCommand(long merchId)
         {
             MerchId = merchId;
         }

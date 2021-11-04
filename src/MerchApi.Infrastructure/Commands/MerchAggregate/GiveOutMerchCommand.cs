@@ -1,11 +1,10 @@
 ﻿using MediatR;
 
 using MerchApi.Http.Requests;
-using MerchApi.Http.Responses;
 
 namespace MerchApi.Infrastructure.Commands.MerchAggregate
 {
-    public class GiveOutMerchCommand : IRequest<GiveOutMerchRequestResponse>
+    public class GiveOutMerchCommand : IRequest<int>
     {
         public GiveOutMerchRequest Request { get; }
 

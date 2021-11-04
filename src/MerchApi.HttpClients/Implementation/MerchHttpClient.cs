@@ -14,12 +14,12 @@ namespace MerchApi.HttpClients.Implementation
             _httpClient = httpClient;
         }
 
-        public Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(long id)
+        public Task<GetMerchIssueInfoResponse> GetMerchDeliveryInfo(long id)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<GiveOutMerchRequestResponse> GetMerchPack(long id)
+        public Task<GiveOutMerchResponse> GetMerchPack(long id)
         {
             throw new System.NotImplementedException();
         }

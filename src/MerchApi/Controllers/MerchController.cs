@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,9 +33,9 @@ namespace MerchApi.Controllers
         }
 
         /// <summary>
-        /// Запрос на выдачу мерча
+        /// Обработка запроса от Админки на выдачу мерча сотруднику
         /// </summary>
-        /// <returns>GetMerchPackResponse</returns>
+        /// <returns>GiveOutMerchResponse</returns>
         /// <response code="200">Request is accepted</response>
         /// <response code="400">Invalid request</response>
         /// <response code="404">Not Found</response>
@@ -44,18 +45,18 @@ namespace MerchApi.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpPost]
-        public async Task<ActionResult<GiveOutMerchRequestResponse>> GiveOutMerch([FromBody][Required] GiveOutMerchRequest request, CancellationToken token)
+        public async Task<ActionResult<int>> GiveOutMerch([FromBody][Required] GiveOutMerchRequest request, CancellationToken token)
         {
             _logger.LogInformation($"Поступил запрос на выдачу мерча");
 
             var command = new GiveOutMerchCommand(request);
             var response = await _mediator.Send(command, token);
 
-            return Ok(response);
+            return response != 0 ? StatusCode((int)HttpStatusCode.OK, response) : StatusCode((int)HttpStatusCode.InternalServerError);
         }
 
         /// <summary>
-        /// Метод возвращает информацию о выдаче мерча по id сотрудника
+        /// Обработка запроса от Админки на получение информации о выдаче мерча по employeeId сотрудника
         /// </summary>
         /// <returns>GetMerchPackResponse</returns>
         /// <response code="200">Request is accepted</response>
@@ -66,13 +67,12 @@ namespace MerchApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [HttpGet("{id:long}/delivery")]
-        public async Task<ActionResult<GiveOutMerchRequestResponse>> GetMerchDeliveryInfo([FromRoute][Required] long id, CancellationToken token)
+        [HttpGet("{employeeId:long}")]
+        public async Task<ActionResult<GetMerchIssueInfoResponse>> GetMerchDeliveryInfo([FromRoute][Required] long employeeId, CancellationToken token)
         {
-            _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча");
+            _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча для сотрудника = '{employeeId}'");
 
-            var query = new GetMerchIssueCommand(id);
-
+            var query = new GetMerchIssueInfoCommand(employeeId);
             var response = await _mediator.Send(query, token);
 
             return Ok(response);

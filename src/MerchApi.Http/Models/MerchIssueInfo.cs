@@ -1,16 +1,20 @@
 ﻿using System;
 
+using MerchApi.Http.Enums;
+
 namespace MerchApi.Http.Models
 {
-    public class GetMerchDeliveryInfoResponseUnit
+    public class MerchIssueInfo
     {
         public long Id { get; set; }
         public DateTime DeliveryDate { get; set; }
+        public MerchType MerchType { get; set; }
 
-        public GetMerchDeliveryInfoResponseUnit(long id, DateTime deliveryDate)
+        public MerchIssueInfo(long id, DateTime deliveryDate, MerchType merchType)
         {
             Id = id;
             DeliveryDate = deliveryDate;
+            MerchType = merchType;
         }
     }
 }
