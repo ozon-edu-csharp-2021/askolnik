@@ -7,16 +7,17 @@
 
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="9.0.0" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\MerchApi.Domain\MerchApi.Domain.csproj" />
-	  <ProjectReference Include="..\MerchApi.Http\MerchApi.Http.csproj" />
+		<ProjectReference Include="..\MerchApi.Domain\MerchApi.Domain.csproj" />
+		<ProjectReference Include="..\MerchApi.Http\MerchApi.Http.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Handlers\DomainEvent\" />
+		<Folder Include="Handlers\DomainEvent\" />
 	</ItemGroup>
 
 </Project>

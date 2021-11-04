@@ -1,5 +1,8 @@
+using MerchApi.Domain.AggregationModels.GetMerchIssueAggregate;
 using MerchApi.GrpcServices;
+using MerchApi.Infrastructure.Extensions;
 using MerchApi.Infrastructure.Interceptors;
+using MerchApi.Infrastructure.Stubs;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +23,9 @@ namespace MerchApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMediatR();
+            services.AddSingleton<IMerchIssueRepository, MerchIssueRepository>();
+
             services.AddGrpc(options => options.Interceptors.Add<GrpcLoggingInterceptor>());
         }
 

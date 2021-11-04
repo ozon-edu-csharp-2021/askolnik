@@ -6,6 +6,6 @@ namespace MerchApi.Http.Responses
 {
     public class GetMerchIssueInfoResponse
     {
-        public IList<MerchIssueInfo> IssuedMerchs { get; set; } = new List<MerchIssueInfo>();
+        public IList<MerchIssueInfo> IssuedMerchs { get; } = new List<MerchIssueInfo>();
     }
 }

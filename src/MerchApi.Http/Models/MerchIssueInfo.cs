@@ -6,14 +6,14 @@ namespace MerchApi.Http.Models
 {
     public class MerchIssueInfo
     {
-        public long Id { get; set; }
-        public DateTime DeliveryDate { get; set; }
-        public MerchType MerchType { get; set; }
+        public long Id { get; }
+        public DateTime IssueDate { get; }
+        public MerchType MerchType { get; }
 
-        public MerchIssueInfo(long id, DateTime deliveryDate, MerchType merchType)
+        public MerchIssueInfo(long id, DateTime issueDate, MerchType merchType)
         {
             Id = id;
-            DeliveryDate = deliveryDate;
+            IssueDate = issueDate;
             MerchType = merchType;
         }
     }

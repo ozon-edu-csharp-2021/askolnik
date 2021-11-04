@@ -1,6 +1,6 @@
 ﻿using MerchApi.Domain.SharedKernel.Models;
 
-namespace MerchApi.Domain.AggregationModels.GetMerchIssueInfoAggregate
+namespace MerchApi.Domain.AggregationModels.GetMerchIssueAggregate
 {
     /// <summary>
     /// Тип мерча для выдачи

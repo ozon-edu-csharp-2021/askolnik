@@ -1,41 +1,48 @@
-﻿namespace MerchApi.Domain.SharedKernel.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace MerchApi.Domain.SharedKernel.Models
 {
-    public abstract class ValueObject<T> where T : ValueObject<T>
+    public abstract class ValueObject
     {
-        public override bool Equals(object obj)
+        protected static bool EqualOperator(ValueObject left, ValueObject right)
         {
-            if (obj is not T valueObject)
+            if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
+            {
                 return false;
-
-            if (GetType() != GetType())
-                return false;
-
-            return EqualsCore(valueObject);
+            }
+            return ReferenceEquals(left, null) || left.Equals(right);
         }
 
-        protected abstract bool EqualsCore(T other);
+        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
+        {
+            return !(EqualOperator(left, right));
+        }
+
+        protected abstract IEnumerable<object> GetEqualityComponents();
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            var other = (ValueObject)obj;
+
+            return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+        }
 
         public override int GetHashCode()
         {
-            return GetHashCodeCore();
+            return GetEqualityComponents()
+                .Select(x => x != null ? x.GetHashCode() : 0)
+                .Aggregate((x, y) => x ^ y);
         }
 
-        protected abstract int GetHashCodeCore();
-
-        public static bool operator ==(ValueObject<T> a, ValueObject<T> b)
+        public ValueObject GetCopy()
         {
-            if (a is null && b is null)
-                return true;
-
-            if (a is null || b is null)
-                return false;
-
-            return a.Equals(b);
-        }
-
-        public static bool operator !=(ValueObject<T> a, ValueObject<T> b)
-        {
-            return !(a == b);
+            return this.MemberwiseClone() as ValueObject;
         }
     }
 }

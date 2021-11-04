@@ -2,17 +2,17 @@
 
 using MerchApi.Domain.SharedKernel.Models;
 
-namespace MerchApi.Domain.AggregationModels.GetMerchIssueInfoAggregate
+namespace MerchApi.Domain.AggregationModels.GetMerchIssueAggregate
 {
     /// <summary>
     /// Мерч, который выдавался сотруднику
     /// </summary>
-    public class IssuedMerch : Entity
+    public class MerchIssue : Entity
     {
         /// <summary>
-        /// Идентификатор сотрудника, которому выдавался мерч
+        /// Сотрудник
         /// </summary>
-        public long EmployeeId { get; }
+        public int EmployeeId { get; }
 
         /// <summary>
         /// Тип выданного мерча
@@ -29,7 +29,7 @@ namespace MerchApi.Domain.AggregationModels.GetMerchIssueInfoAggregate
         /// </summary>
         public int MerchPack { get; set; }
 
-        public IssuedMerch(long employeeId, MerchType merchType, DateTime issueDate)
+        public MerchIssue(int employeeId, MerchType merchType, DateTime issueDate)
         {
             EmployeeId = employeeId;
             MerchType = merchType;

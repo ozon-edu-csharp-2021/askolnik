@@ -7,8 +7,8 @@ namespace MerchApi.Http.Requests
     /// </summary>
     public class GiveOutMerchRequest
     {
-        public int EmployeeId { get; set; }
+        public int EmployeeId { get; init; }
 
-        public MerchType MerchType { get; set; }
+        public MerchType MerchType { get; init; }
     }
 }
