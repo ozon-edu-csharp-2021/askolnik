@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using MerchApi.Infrastructure.Commands.MerchAggregate;
+using MerchApi.Infrastructure.Commands.GiveOutMerchRequestAggregate;
 
 using Microsoft.Extensions.Logging;
 
-namespace MerchApi.Infrastructure.Handlers.MerchAggregate
+namespace MerchApi.Infrastructure.Handlers.GiveOutMerchRequestAggregate
 {
     public class GiveOutMerchCommandHandler : IRequestHandler<GiveOutMerchCommand, int>
     {

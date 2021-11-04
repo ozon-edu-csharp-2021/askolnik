@@ -8,8 +8,8 @@ using MediatR;
 
 using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
-using MerchApi.Infrastructure.Commands.MerchAggregate;
-using MerchApi.Infrastructure.Queries.MerchAggregate;
+using MerchApi.Infrastructure.Commands.GiveOutMerchRequestAggregate;
+using MerchApi.Infrastructure.Queries.GetMerchIssueInfoAggregate;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -68,7 +68,7 @@ namespace MerchApi.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpGet("{employeeId:long}")]
-        public async Task<ActionResult<GetMerchIssueInfoResponse>> GetMerchDeliveryInfo([FromRoute][Required] long employeeId, CancellationToken token)
+        public async Task<ActionResult<GetMerchIssueInfoResponse>> GetMerchIssueInfo([FromRoute][Required] long employeeId, CancellationToken token)
         {
             _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча для сотрудника = '{employeeId}'");
 

@@ -1,3 +1,4 @@
+
 using MerchApi.Infrastructure.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
@@ -5,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 using Serilog;
 
-namespace MerchandiseService
+namespace MerchApi
 {
     public class Program
     {

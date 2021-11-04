@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using MerchApi.Domain.SharedKernel.Interfaces;
 
-namespace MerchApi.Domain.AggregationModels.MerchAggregate
+namespace MerchApi.Domain.AggregationModels.GetMerchIssueInfoAggregate
 {
     /// <summary>
     /// Репозиторий для управления <see cref="IssuedMerch"/>

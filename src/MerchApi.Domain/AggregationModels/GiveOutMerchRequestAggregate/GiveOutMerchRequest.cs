@@ -12,9 +12,17 @@ namespace MerchApi.Domain.AggregationModels.GiveOutMerchRequestAggregate
         /// </summary>
         public RequestNumber RequestNumber { get; private set; }
 
-        public GiveOutMerchRequest(RequestNumber requestNumber)
+        /// <summary>
+        /// Статус заявки
+        /// </summary>
+        public RequestStatus RequestStatus { get; private set; }
+
+        public GiveOutMerchRequest(
+            RequestNumber requestNumber,
+            RequestStatus requestStatus)
         {
             RequestNumber = requestNumber;
+            RequestStatus = requestStatus;
         }
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 
+using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
 
 namespace MerchApi.HttpClients
 {
     public interface IMerchHttpClient
     {
-        Task<GiveOutMerchResponse> GetMerchPack(long id);
-        Task<GetMerchIssueInfoResponse> GetMerchDeliveryInfo(long id);
+        Task<int> GiveOutMerch(GiveOutMerchRequest request);
+        Task<GetMerchIssueInfoResponse> GetMerchDeliveryInfo(long employeeId);
     }
 }

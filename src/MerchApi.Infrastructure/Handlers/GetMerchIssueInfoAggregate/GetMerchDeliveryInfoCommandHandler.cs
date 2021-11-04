@@ -6,11 +6,11 @@ using MediatR;
 
 using MerchApi.Http.Models;
 using MerchApi.Http.Responses;
-using MerchApi.Infrastructure.Queries.MerchAggregate;
+using MerchApi.Infrastructure.Queries.GetMerchIssueInfoAggregate;
 
 using Microsoft.Extensions.Logging;
 
-namespace MerchApi.Infrastructure.Handlers.MerchAggregate
+namespace MerchApi.Infrastructure.Handlers.GetMerchIssueInfoAggregate
 {
     public class GetMerchDeliveryInfoCommandHandler : IRequestHandler<GetMerchIssueInfoCommand, GetMerchIssueInfoResponse>
     {
