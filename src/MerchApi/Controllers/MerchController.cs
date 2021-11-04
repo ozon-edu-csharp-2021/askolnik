@@ -45,14 +45,14 @@ namespace MerchApi.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpPost]
-        public async Task<ActionResult<int>> GiveOutMerch([FromBody][Required] GiveOutMerchRequest request, CancellationToken token)
+        public async Task<ActionResult> GiveOutMerch([FromBody][Required] GiveOutMerchRequest request, CancellationToken token)
         {
             _logger.LogInformation($"Поступил запрос на выдачу мерча");
 
             var command = new GiveOutMerchCommand(request);
             var response = await _mediator.Send(command, token);
 
-            return response != 0 ? StatusCode((int)HttpStatusCode.OK, response) : StatusCode((int)HttpStatusCode.InternalServerError);
+            return StatusCode((int)HttpStatusCode.Created, response);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace MerchApi.Controllers
             var query = new GetMerchIssueCommand(employeeId);
             var response = await _mediator.Send(query, token);
 
-            return Ok(response);
+            return StatusCode((int)HttpStatusCode.OK, response);
         }
     }
 }

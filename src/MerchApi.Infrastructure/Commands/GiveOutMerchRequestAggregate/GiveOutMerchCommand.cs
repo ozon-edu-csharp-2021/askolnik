@@ -4,7 +4,7 @@ using MerchApi.Http.Requests;
 
 namespace MerchApi.Infrastructure.Commands.GiveOutMerchRequestAggregate
 {
-    public class GiveOutMerchCommand : IRequest<int>
+    public class GiveOutMerchCommand : IRequest
     {
         public GiveOutMerchRequest Request { get; }
 

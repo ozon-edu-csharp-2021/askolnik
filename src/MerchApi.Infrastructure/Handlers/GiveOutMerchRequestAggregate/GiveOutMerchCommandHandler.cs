@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MerchApi.Infrastructure.Handlers.GiveOutMerchRequestAggregate
 {
-    public class GiveOutMerchCommandHandler : IRequestHandler<GiveOutMerchCommand, int>
+    public class GiveOutMerchCommandHandler : IRequestHandler<GiveOutMerchCommand>
     {
         private readonly ILogger<GiveOutMerchCommandHandler> _logger;
 
@@ -25,11 +25,11 @@ namespace MerchApi.Infrastructure.Handlers.GiveOutMerchRequestAggregate
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>Возвращает id созданного мерча</returns>
-        public async Task<int> Handle(GiveOutMerchCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(GiveOutMerchCommand request, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"[{nameof(GiveOutMerchCommandHandler)}] Обработка запроса на выдачу мерча");
 
-            return await Task.FromResult(1);
+            return Unit.Value;
         }
     }
 }

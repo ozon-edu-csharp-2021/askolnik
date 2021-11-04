@@ -16,8 +16,4 @@
 		<ProjectReference Include="..\MerchApi.Http\MerchApi.Http.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Handlers\DomainEvent\" />
-	</ItemGroup>
-
 </Project>
