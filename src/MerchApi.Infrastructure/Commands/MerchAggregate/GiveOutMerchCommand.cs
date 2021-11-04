@@ -2,7 +2,7 @@
 
 using MerchApi.Http.Requests;
 
-namespace MerchApi.Infrastructure.Commands.GiveOutMerchRequestAggregate
+namespace MerchApi.Infrastructure.Commands.MerchAggregate
 {
     public class GiveOutMerchCommand : IRequest
     {

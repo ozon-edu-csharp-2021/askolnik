@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using MerchApi.Domain.AggregationModels.EmployeeAggregate;
 using MerchApi.Domain.SharedKernel.Interfaces;
 
-namespace MerchApi.Domain.AggregationModels.GetMerchIssueAggregate
+namespace MerchApi.Domain.AggregationModels.MerchAggregate
 {
     /// <summary>
     /// Репозиторий для управления <see cref="MerchIssue"/>
     /// </summary>
-    public interface IMerchIssueRepository : IRepository<MerchIssue>
+    public interface IMerchRepository : IRepository<GiveOutMerchRequest>
     {
         /// <summary>
         /// Найти выданные мерчи по сотруднику
@@ -18,6 +18,6 @@ namespace MerchApi.Domain.AggregationModels.GetMerchIssueAggregate
         /// <param name="employeeId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<IList<MerchIssue>> FindByEmployeeAsync(Employee employee, CancellationToken cancellationToken = default);
+        Task<IList<GiveOutMerchRequest>> FindByEmployeeAsync(Employee employee, CancellationToken cancellationToken = default);
     }
 }

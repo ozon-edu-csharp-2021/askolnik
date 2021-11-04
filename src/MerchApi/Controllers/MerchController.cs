@@ -8,8 +8,8 @@ using MediatR;
 
 using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
-using MerchApi.Infrastructure.Commands.GiveOutMerchRequestAggregate;
-using MerchApi.Infrastructure.Queries.GetMerchIssueAggregate;
+using MerchApi.Infrastructure.Commands.MerchAggregate;
+using MerchApi.Infrastructure.Queries.MerchAggregate;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -50,9 +50,9 @@ namespace MerchApi.Controllers
             _logger.LogInformation($"Поступил запрос на выдачу мерча");
 
             var command = new GiveOutMerchCommand(request);
-            var response = await _mediator.Send(command, token);
+            await _mediator.Send(command, token);
 
-            return StatusCode((int)HttpStatusCode.Created, response);
+            return StatusCode((int)HttpStatusCode.Created);
         }
 
         /// <summary>
