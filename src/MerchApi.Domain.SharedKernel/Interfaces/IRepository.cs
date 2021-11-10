@@ -25,9 +25,9 @@ namespace MerchApi.Domain.SharedKernel.Interfaces
         /// <summary>
         /// Обновить существующую сущность
         /// </summary>
-        /// <param name="itemToUpdate">Объект для создания</param>
+        /// <param name="itemToUpdate">Объект для обновления</param>
         /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
-        /// <returns>Обновленная сущность сущность</returns>
+        /// <returns>Обновленная сущность</returns>
         Task<TAggregationRoot> UpdateAsync(TAggregationRoot itemToUpdate, CancellationToken cancellationToken = default);
     }
 }

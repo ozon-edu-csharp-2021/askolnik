@@ -17,11 +17,11 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
     public class GetMerchIssueCommandHandler : IRequestHandler<GetMerchIssueCommand, GetMerchIssueInfoResponse>
     {
         private readonly ILogger<GetMerchIssueCommandHandler> _logger;
-        private readonly IMerchRepository _merchRepository;
+        private readonly IGiveOutMerchRequestRepository _merchRepository;
 
         public GetMerchIssueCommandHandler(
             ILogger<GetMerchIssueCommandHandler> logger,
-            IMerchRepository merchRepository)
+            IGiveOutMerchRequestRepository merchRepository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _merchRepository = merchRepository ?? throw new ArgumentNullException(nameof(merchRepository));

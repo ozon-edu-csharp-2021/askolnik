@@ -66,8 +66,8 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
         /// <summary>
         /// Смена статуса у заявки
         /// </summary>
-        /// <param name="status"></param>
-        /// <exception cref="Exception"></exception>
+        /// <param name="status">Статус запроса</param>
+        /// <exception cref="RequestStatusException">Исключение при неверном запросе</exception>
         public void ChangeStatus(RequestStatus status)
         {
             if (Status.Equals(RequestStatus.Done))

@@ -16,11 +16,11 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
     public class GiveOutMerchCommandHandler : IRequestHandler<GiveOutMerchCommand>
     {
         private readonly ILogger<GiveOutMerchCommandHandler> _logger;
-        private readonly IMerchRepository _merchRepository;
+        private readonly IGiveOutMerchRequestRepository _merchRepository;
 
         public GiveOutMerchCommandHandler(
             ILogger<GiveOutMerchCommandHandler> logger,
-            IMerchRepository merchRepository)
+            IGiveOutMerchRequestRepository merchRepository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _merchRepository = merchRepository ?? throw new ArgumentNullException(nameof(merchRepository));
@@ -29,8 +29,8 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
         /// <summary>
         /// Обработка запроса на выдачу мерча
         /// </summary>
-        /// <param name="command"></param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="command">Команда выдчи мерча</param>
+        /// <param name="cancellationToken">Токен для отмены операции</param>
         /// <returns>Возвращает id созданного мерча</returns>
         public async Task<Unit> Handle(GiveOutMerchCommand command, CancellationToken cancellationToken)
         {

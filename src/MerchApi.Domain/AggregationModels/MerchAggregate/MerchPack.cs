@@ -19,11 +19,9 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
             }
         }
 
-        /// <inheritdoc />
         public IEnumerator<Item> GetEnumerator()
             => Items.GetEnumerator();
 
-        /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
     }

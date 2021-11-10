@@ -8,16 +8,16 @@ using MerchApi.Domain.SharedKernel.Interfaces;
 namespace MerchApi.Domain.AggregationModels.MerchAggregate
 {
     /// <summary>
-    /// Репозиторий для управления <see cref="MerchIssue"/>
+    /// Репозиторий для управления
     /// </summary>
-    public interface IMerchRepository : IRepository<GiveOutMerchRequest>
+    public interface IGiveOutMerchRequestRepository : IRepository<GiveOutMerchRequest>
     {
         /// <summary>
         /// Найти выданные мерчи по сотруднику
         /// </summary>
-        /// <param name="employeeId"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="employee">Сотрудник</param>
+        /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
+        /// <returns>Возвращает список выданных мерчей сотруднику</returns>
         Task<IList<GiveOutMerchRequest>> FindByEmployeeAsync(Employee employee, CancellationToken cancellationToken = default);
     }
 }

@@ -1,24 +1,23 @@
-﻿using System;
+﻿using MerchApi.Domain.AggregationModels.EmployeeAggregate;
+using MerchApi.Domain.AggregationModels.MerchAggregate;
+using MerchApi.Domain.SharedKernel.Interfaces;
+
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MerchApi.Domain.AggregationModels.EmployeeAggregate;
-using MerchApi.Domain.AggregationModels.MerchAggregate;
-using MerchApi.Domain.SharedKernel.Interfaces;
-
 namespace MerchApi.Infrastructure.Stubs
 {
-    public class MerchRepositoryStub : IMerchRepository
+    public class GiveOutMerchRequestRepositoryStub : IGiveOutMerchRequestRepository
     {
         public IUnitOfWork UnitOfWork => new UnitOfWorkStub();
 
-        public async Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken = default)
+        public Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken = default)
         {
-            return await Task.FromResult(itemToCreate);
+            return Task.FromResult(itemToCreate);
         }
 
-        public async Task<IList<GiveOutMerchRequest>> FindByEmployeeAsync(Employee employee, CancellationToken cancellationToken = default)
+        public Task<IList<GiveOutMerchRequest>> FindByEmployeeAsync(Employee employee, CancellationToken cancellationToken = default)
         {
             var response = new List<GiveOutMerchRequest>();
 
@@ -40,12 +39,12 @@ namespace MerchApi.Infrastructure.Stubs
                     break;
             }
 
-            return await Task.FromResult<IList<GiveOutMerchRequest>>(response);
+            return Task.FromResult<IList<GiveOutMerchRequest>>(response);
         }
 
-        public async Task<GiveOutMerchRequest> UpdateAsync(GiveOutMerchRequest itemToUpdate, CancellationToken cancellationToken = default)
+        public Task<GiveOutMerchRequest> UpdateAsync(GiveOutMerchRequest itemToUpdate, CancellationToken cancellationToken = default)
         {
-            return await Task.FromResult(itemToUpdate);
+            return Task.FromResult(itemToUpdate);
         }
     }
 }

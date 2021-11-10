@@ -1,5 +1,4 @@
 using MerchApi.Domain.AggregationModels.MerchAggregate;
-using MerchApi.Domain.SharedKernel.Interfaces;
 using MerchApi.GrpcServices;
 using MerchApi.Infrastructure.Extensions;
 using MerchApi.Infrastructure.Interceptors;
@@ -25,7 +24,7 @@ namespace MerchApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR();
-            services.AddSingleton<IMerchRepository, MerchRepositoryStub>();
+            services.AddSingleton<IGiveOutMerchRequestRepository, GiveOutMerchRequestRepositoryStub>();
 
             services.AddGrpc(options => options.Interceptors.Add<GrpcLoggingInterceptor>());
         }
