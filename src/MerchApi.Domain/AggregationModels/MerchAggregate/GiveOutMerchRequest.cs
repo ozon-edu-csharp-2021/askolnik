@@ -43,14 +43,14 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
 
         public GiveOutMerchRequest(int employeeId, MerchType merchType) : this()
         {
-            EmployeeId = employeeId;
-            MerchType = merchType;
+            EmployeeId = employeeId > 0 ? employeeId : throw new Exception("EmploeeId must be more 0");
+            MerchType = merchType ?? throw new Exception("MerchType must be not null");
         }
 
         /// <summary>
         /// Создаем заявку для конкретного сотрудника
         /// </summary>
-        public void Create()
+        public void Register()
         {
             if (Status != RequestStatus.Draft)
             {

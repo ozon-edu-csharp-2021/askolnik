@@ -45,7 +45,7 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
             }
 
             var giveOutMerchRequest = new GiveOutMerchRequest(command.Request.EmployeeId, merchType);
-            giveOutMerchRequest.Create();
+            giveOutMerchRequest.Register();
 
             await _merchRepository.CreateAsync(giveOutMerchRequest, cancellationToken);
             await _merchRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
