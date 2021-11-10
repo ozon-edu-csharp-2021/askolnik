@@ -19,4 +19,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MerchApi.Domain.SharedKernel\MerchApi.Domain.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\src\MerchApi.Domain\MerchApi.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

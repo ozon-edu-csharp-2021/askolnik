@@ -15,7 +15,7 @@ namespace MerchApi.HttpClients.Implementation
             _httpClient = httpClient;
         }
 
-        public Task<GetMerchIssueInfoResponse> GetMerchDeliveryInfo(long employeeId)
+        public Task<GetMerchRequestInfoResponse> GetMerchDeliveryInfo(long employeeId)
         {
             throw new System.NotImplementedException();
         }

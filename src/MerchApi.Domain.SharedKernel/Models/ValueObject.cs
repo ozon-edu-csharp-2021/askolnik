@@ -17,7 +17,7 @@ namespace MerchApi.Domain.SharedKernel.Models
 
         protected static bool NotEqualOperator(ValueObject left, ValueObject right)
         {
-            return !(EqualOperator(left, right));
+            return !EqualOperator(left, right);
         }
 
         protected abstract IEnumerable<object> GetEqualityComponents();
@@ -31,19 +31,12 @@ namespace MerchApi.Domain.SharedKernel.Models
 
             var other = (ValueObject)obj;
 
-            return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+            return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
         public override int GetHashCode()
-        {
-            return GetEqualityComponents()
+            => GetEqualityComponents()
                 .Select(x => x != null ? x.GetHashCode() : 0)
                 .Aggregate((x, y) => x ^ y);
-        }
-
-        public ValueObject GetCopy()
-        {
-            return this.MemberwiseClone() as ValueObject;
-        }
     }
 }

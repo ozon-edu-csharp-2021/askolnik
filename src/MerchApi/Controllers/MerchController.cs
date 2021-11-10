@@ -68,11 +68,11 @@ namespace MerchApi.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpGet("{employeeId:int}")]
-        public async Task<ActionResult<GetMerchIssueInfoResponse>> GetMerchIssueInfo([FromRoute][Required] int employeeId, CancellationToken token)
+        public async Task<ActionResult<GetMerchRequestInfoResponse>> GetMerchIssueInfo([FromRoute][Required] int employeeId, CancellationToken token)
         {
             _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча для сотрудника = '{employeeId}'");
 
-            var query = new GetMerchIssueCommand(employeeId);
+            var query = new GetMerchRequestInfoCommand(employeeId);
             var response = await _mediator.Send(query, token);
 
             return StatusCode((int)HttpStatusCode.OK, response);

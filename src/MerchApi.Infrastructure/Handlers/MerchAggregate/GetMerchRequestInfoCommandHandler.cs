@@ -14,28 +14,28 @@ using Microsoft.Extensions.Logging;
 
 namespace MerchApi.Infrastructure.Handlers.MerchAggregate
 {
-    public class GetMerchIssueCommandHandler : IRequestHandler<GetMerchIssueCommand, GetMerchIssueInfoResponse>
+    public class GetMerchRequestInfoCommandHandler : IRequestHandler<GetMerchRequestInfoCommand, GetMerchRequestInfoResponse>
     {
-        private readonly ILogger<GetMerchIssueCommandHandler> _logger;
+        private readonly ILogger<GetMerchRequestInfoCommandHandler> _logger;
         private readonly IGiveOutMerchRequestRepository _merchRepository;
 
-        public GetMerchIssueCommandHandler(
-            ILogger<GetMerchIssueCommandHandler> logger,
+        public GetMerchRequestInfoCommandHandler(
+            ILogger<GetMerchRequestInfoCommandHandler> logger,
             IGiveOutMerchRequestRepository merchRepository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _merchRepository = merchRepository ?? throw new ArgumentNullException(nameof(merchRepository));
         }
 
-        public async Task<GetMerchIssueInfoResponse> Handle(GetMerchIssueCommand request, CancellationToken cancellationToken)
+        public async Task<GetMerchRequestInfoResponse> Handle(GetMerchRequestInfoCommand request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"[{nameof(GetMerchIssueCommandHandler)}] Проверка, выдавался ли мерч");
+            _logger.LogDebug($"[{nameof(GetMerchRequestInfoCommandHandler)}] Проверка, выдавался ли мерч");
 
             var issuedMerches = await _merchRepository.FindByEmployeeAsync(new Employee(request.EmployeeId), cancellationToken);
             if (issuedMerches is null || issuedMerches.Count == 0)
                 throw new Exception($"Not found for EmployeeId = '{request.EmployeeId}'");
 
-            var response = new GetMerchIssueInfoResponse();
+            var response = new GetMerchRequestInfoResponse();
 
             foreach (var item in issuedMerches)
             {

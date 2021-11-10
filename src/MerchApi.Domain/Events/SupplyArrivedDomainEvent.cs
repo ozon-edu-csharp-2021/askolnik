@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using MerchApi.Domain.SharedKernel.Models;
 
 namespace MerchApi.Domain.Events
 {
-    public class SupplyArrivedDomainEvent : INotification
+    public class SupplyArrivedDomainEvent : BaseDomainEvent
     {
 
     }

@@ -1,14 +1,15 @@
 ﻿using System;
 
 using MerchApi.Domain.Exceptions;
+using MerchApi.Domain.SharedKernel.Interfaces;
 using MerchApi.Domain.SharedKernel.Models;
 
 namespace MerchApi.Domain.AggregationModels.MerchAggregate
 {
     /// <summary>
-    /// Запрос на выдачу мерча
+    /// Заявка на выдачу мерча
     /// </summary>
-    public class GiveOutMerchRequest : Entity
+    public class GiveOutMerchRequest : Entity, IAggregateRoot
     {
         /// <summary>
         /// Статус заявки
@@ -35,31 +36,27 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
         /// </summary>
         public MerchPack MerchPack { get; private set; }
 
-        public GiveOutMerchRequest() : base()
+        protected GiveOutMerchRequest()
         {
-            Id = 0;
             Status = RequestStatus.Draft;
         }
 
         public GiveOutMerchRequest(int employeeId, MerchType merchType) : this()
         {
             EmployeeId = employeeId;
-            Status = RequestStatus.Created;
             MerchType = merchType;
         }
 
         /// <summary>
         /// Создаем заявку для конкретного сотрудника
         /// </summary>
-        public void Create(int employeeId, MerchType merchType)
+        public void Create()
         {
             if (Status != RequestStatus.Draft)
             {
                 throw new Exception("Incorrect request status");
             }
 
-            EmployeeId = employeeId;
-            MerchType = merchType;
             Status = RequestStatus.Created;
         }
 
@@ -71,7 +68,7 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
         public void ChangeStatus(RequestStatus status)
         {
             if (Status.Equals(RequestStatus.Done))
-                throw new RequestStatusException($"Request in done. Change status unavailable");
+                throw new RequestStatusException($"Request is done. Change status unavailable");
 
             Status = status;
         }

@@ -44,8 +44,8 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
                 throw new ArgumentException($"Невозможно поворно выдать мерч типа = '{merchType.Name}'");
             }
 
-            var giveOutMerchRequest = new GiveOutMerchRequest();
-            giveOutMerchRequest.Create(command.Request.EmployeeId, merchType);
+            var giveOutMerchRequest = new GiveOutMerchRequest(command.Request.EmployeeId, merchType);
+            giveOutMerchRequest.Create();
 
             await _merchRepository.CreateAsync(giveOutMerchRequest, cancellationToken);
             await _merchRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);

@@ -16,5 +16,9 @@ namespace MerchApi.Infrastructure.Stubs
         {
             return Task.FromResult(true);
         }
+        public void Dispose()
+        {
+
+        }
     }
 }
