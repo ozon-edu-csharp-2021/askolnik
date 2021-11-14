@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 
+using MediatR;
+
 using MerchApi.Infrastructure.Filters;
 using MerchApi.Infrastructure.StartupFilters;
 using MerchApi.Infrastructure.Swagger;
@@ -27,12 +29,14 @@ namespace MerchApi.Infrastructure.Extensions
         {
             builder.ConfigureServices(services =>
             {
+                var assembly = Assembly.GetExecutingAssembly();
+                // Add filters
                 services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
                 services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
 
                 services.AddSwaggerGen(c =>
                 {
-                    var attributes = Assembly.GetExecutingAssembly().CustomAttributes;
+                    var attributes = assembly.CustomAttributes;
                     var swaggerDocVersion = ReflectionHelper.AttributeReader<AssemblyVersionAttribute>(attributes) ?? ReflectionHelper.AttributeReader<AssemblyFileVersionAttribute>(attributes);
                     var swaggerDocTitle = ReflectionHelper.AttributeReader<AssemblyTitleAttribute>(attributes);
                     var swaggerDocDescription = ReflectionHelper.AttributeReader<AssemblyDescriptionAttribute>(attributes);
@@ -46,7 +50,7 @@ namespace MerchApi.Infrastructure.Extensions
 
                     c.CustomSchemaIds(x => x.FullName);
 
-                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlFile = $"{assembly.GetName().Name}.xml";
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     c.IncludeXmlComments(xmlPath);
                 });
@@ -56,7 +60,7 @@ namespace MerchApi.Infrastructure.Extensions
         }
 
         /// <summary>
-        /// Добавление глобального фильтра перрываний
+        /// Добавление глобального фильтра прерываний
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>

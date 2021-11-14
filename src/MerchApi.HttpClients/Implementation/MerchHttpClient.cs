@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
+using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
 
 namespace MerchApi.HttpClients.Implementation
@@ -14,12 +15,12 @@ namespace MerchApi.HttpClients.Implementation
             _httpClient = httpClient;
         }
 
-        public Task<GetMerchDeliveryInfoResponse> GetMerchDeliveryInfo(long id)
+        public Task<GetMerchRequestInfoResponse> GetMerchDeliveryInfo(long employeeId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<GetMerchPackResponse> GetMerchPack(long id)
+        public Task<int> GiveOutMerch(GiveOutMerchRequest request)
         {
             throw new System.NotImplementedException();
         }

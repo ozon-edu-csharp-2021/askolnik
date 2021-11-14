@@ -10,12 +10,12 @@ var client = new MerchApiGrpc.MerchApiGrpcClient(channel);
 
 try
 {
-    var response = await client.GetMerchPackAsync(new GetMerchPackRequest
+    var response = await client.GetMerchAvailabilityAsync(new MerchApi.Grpc.GetMerchAvailabilityRequest
     {
-        Id = 1,
+        Id = 1
     });
 
-    Console.WriteLine(response?.MerchPack);
+    Console.WriteLine(response?.MerchAvailabilityInfo);
 }
 catch (RpcException e)
 {
@@ -25,12 +25,12 @@ catch (RpcException e)
 
 try
 {
-    var response = await client.GetMerchDeliveryInfoAsync(new GetMerchDeliveryInfoRequest
+    var response = await client.GiveOutMerchAsync(new MerchApi.Grpc.GiveOutMerchRequest
     {
         Id = 1
     });
 
-    Console.WriteLine(response?.MerchDeliveryInfo);
+    Console.WriteLine(response?.Merch);
 }
 catch (RpcException e)
 {

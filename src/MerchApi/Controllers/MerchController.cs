@@ -1,9 +1,15 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
+using MediatR;
+
+using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
-using MerchApi.Services;
+using MerchApi.Infrastructure.Commands.MerchAggregate;
+using MerchApi.Infrastructure.Queries.MerchAggregate;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,16 +22,41 @@ namespace MerchApi.Controllers
     public class MerchController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IMerchService _merchService;
+        private readonly IMediator _mediator;
 
-        public MerchController(ILogger<MerchController> logger, IMerchService merchService)
+        public MerchController(
+            ILogger<MerchController> logger,
+            IMediator mediator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _merchService = merchService ?? throw new ArgumentNullException(nameof(merchService));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         /// <summary>
-        /// Метод возвращает мерч по id
+        /// Обработка запроса от Админки на выдачу мерча сотруднику
+        /// </summary>
+        /// <returns>GiveOutMerchResponse</returns>
+        /// <response code="200">Request is accepted</response>
+        /// <response code="400">Invalid request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [HttpPost]
+        public async Task<ActionResult> GiveOutMerch([FromBody][Required] GiveOutMerchRequest request, CancellationToken token)
+        {
+            _logger.LogInformation($"Поступил запрос на выдачу мерча");
+
+            var command = new GiveOutMerchCommand(request);
+            await _mediator.Send(command, token);
+
+            return StatusCode((int)HttpStatusCode.Created);
+        }
+
+        /// <summary>
+        /// Обработка запроса от Админки на получение информации о выдаче мерча по employeeId сотрудника
         /// </summary>
         /// <returns>GetMerchPackResponse</returns>
         /// <response code="200">Request is accepted</response>
@@ -36,36 +67,15 @@ namespace MerchApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [HttpGet("{id:long}")]
-        public async Task<ActionResult<GetMerchPackResponse>> GetMerchPack([FromRoute][Required] long id)
+        [HttpGet("{employeeId:int}")]
+        public async Task<ActionResult<GetMerchRequestInfoResponse>> GetMerchIssueInfo([FromRoute][Required] int employeeId, CancellationToken token)
         {
-            _logger.LogInformation($"Поступил запрос на получения мерча");
+            _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча для сотрудника = '{employeeId}'");
 
-            var response = await _merchService.GetMerchPack(id);
+            var query = new GetMerchRequestInfoQuery(employeeId);
+            var response = await _mediator.Send(query, token);
 
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Метод возвращает мерч по id
-        /// </summary>
-        /// <returns>GetMerchPackResponse</returns>
-        /// <response code="200">Request is accepted</response>
-        /// <response code="400">Invalid request</response>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
-        [ProducesResponseType(200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        [HttpGet("{id:long}/delivery")]
-        public async Task<ActionResult<GetMerchPackResponse>> GetMerchDeliveryInfo([FromRoute][Required] long id)
-        {
-            _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча");
-
-            var response = await _merchService.GetMerchDeliveryInfo(id);
-
-            return response.HasValue ? Ok(response) : NotFound();
+            return StatusCode((int)HttpStatusCode.OK, response);
         }
     }
 }
