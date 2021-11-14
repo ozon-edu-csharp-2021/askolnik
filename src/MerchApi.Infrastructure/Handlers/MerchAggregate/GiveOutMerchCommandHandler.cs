@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
-using System.Linq;
 
-using MerchApi.Domain.AggregationModels.EmployeeAggregate;
 using MerchApi.Domain.AggregationModels.MerchAggregate;
 using MerchApi.Infrastructure.Commands.MerchAggregate;
 
@@ -36,7 +35,7 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
         {
             _logger.LogDebug($"[{nameof(GiveOutMerchCommandHandler)}] Обработка запроса на выдачу мерча");
 
-            var issuedMerches = await _merchRepository.FindByEmployeeAsync(new Employee(command.Request.EmployeeId), cancellationToken);
+            var issuedMerches = await _merchRepository.FindByEmployeeAsync(command.Request.EmployeeId, cancellationToken);
             var merchType = GetMerchType(command.Request);
 
             if (issuedMerches.Select(x => x.MerchType).Contains(merchType))

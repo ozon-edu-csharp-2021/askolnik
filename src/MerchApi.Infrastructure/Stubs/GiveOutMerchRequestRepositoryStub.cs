@@ -17,25 +17,25 @@ namespace MerchApi.Infrastructure.Stubs
             return Task.FromResult(itemToCreate);
         }
 
-        public Task<IList<GiveOutMerchRequest>> FindByEmployeeAsync(Employee employee, CancellationToken cancellationToken = default)
+        public Task<IList<GiveOutMerchRequest>> FindByEmployeeAsync(int employeeId, CancellationToken cancellationToken = default)
         {
             var response = new List<GiveOutMerchRequest>();
 
-            switch (employee.Id)
+            switch (employeeId)
             {
                 case 1:
-                    response.Add(new GiveOutMerchRequest(employee.Id, MerchType.WelcomePack));
+                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.WelcomePack));
                     break;
 
                 case 2:
-                    response.Add(new GiveOutMerchRequest(employee.Id, MerchType.WelcomePack));
-                    response.Add(new GiveOutMerchRequest(employee.Id, MerchType.ProbationPeriodEndingPack));
+                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.WelcomePack));
+                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.ProbationPeriodEndingPack));
                     break;
 
                 case 3:
-                    response.Add(new GiveOutMerchRequest(employee.Id, MerchType.WelcomePack));
-                    response.Add(new GiveOutMerchRequest(employee.Id, MerchType.ProbationPeriodEndingPack));
-                    response.Add(new GiveOutMerchRequest(employee.Id, MerchType.VeteranPack));
+                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.WelcomePack));
+                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.ProbationPeriodEndingPack));
+                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.VeteranPack));
                     break;
             }
 
