@@ -21,29 +21,16 @@ namespace MerchApi.Domain.Tests
         }
 
         [Fact]
-        public void Register_GiveOutMerchRequest_Success()
+        public void ChangeStatus_GiveOutMerchRequest_Success()
         {
             //Arrange 
             var request = new GiveOutMerchRequest(1, MerchType.WelcomePack);
 
             // Act
-            request.Register();
+            request.ChangeStatus(RequestStatus.Created);
 
             //Assert
             Assert.Equal(RequestStatus.Created, request.Status);
-        }
-
-        [Fact]
-        public void DoubleRegister_GiveOutMerchRequest_Fail()
-        {
-            //Arrange 
-            var request = new GiveOutMerchRequest(1, MerchType.WelcomePack);
-
-            // Act
-            request.Register();
-
-            //Assert
-            Assert.Throws<Exception>(() => request.Register());
         }
 
         [Fact]

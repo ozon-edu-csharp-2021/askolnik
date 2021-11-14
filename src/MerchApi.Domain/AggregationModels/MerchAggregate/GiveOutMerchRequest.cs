@@ -47,19 +47,6 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
         }
 
         /// <summary>
-        /// Создаем заявку для конкретного сотрудника
-        /// </summary>
-        public void Register()
-        {
-            if (Status != RequestStatus.Draft)
-            {
-                throw new Exception("Incorrect request status");
-            }
-
-            Status = RequestStatus.Created;
-        }
-
-        /// <summary>
         /// Смена статуса у заявки
         /// </summary>
         /// <param name="status">Статус запроса</param>

@@ -48,11 +48,11 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
             }
 
             var giveOutMerchRequest = new GiveOutMerchRequest(command.Request.EmployeeId, merchType);
-            giveOutMerchRequest.Register();
 
             await _merchRepository.CreateAsync(giveOutMerchRequest, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
+            giveOutMerchRequest.ChangeStatus(RequestStatus.Created);
             return Unit.Value;
         }
 
