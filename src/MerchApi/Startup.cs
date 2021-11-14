@@ -1,7 +1,6 @@
 using MerchApi.Domain.AggregationModels.MerchAggregate;
 using MerchApi.GrpcServices;
 using MerchApi.Infrastructure.Extensions;
-using MerchApi.Infrastructure.Interceptors;
 using MerchApi.Infrastructure.Stubs;
 
 using Microsoft.AspNetCore.Builder;
@@ -23,10 +22,12 @@ namespace MerchApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR();
+            MerchApi.Infrastructure.ExtensionsAddMediator(services);
+
+
             services.AddSingleton<IGiveOutMerchRequestRepository, GiveOutMerchRequestRepositoryStub>();
 
-            services.AddGrpc(options => options.Interceptors.Add<GrpcLoggingInterceptor>());
+           
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -36,7 +37,6 @@ namespace MerchApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<MerchApiGrpcService>();
