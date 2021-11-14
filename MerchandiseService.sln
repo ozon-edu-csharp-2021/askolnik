@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MerchApi.Domain.Tests", "te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MerchApi.Domain.SharedKernel", "src\MerchApi.Domain.SharedKernel\MerchApi.Domain.SharedKernel.csproj", "{B4D52573-1C74-4AE5-B204-C92774039AB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MerchApi.Migrator", "src\MerchApi.Migrator\MerchApi.Migrator.csproj", "{08DF38A7-A071-4B14-BD70-35B64089D014}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MerchApi.Migrator", "src\MerchApi.Migrator\MerchApi.Migrator.csproj", "{E7E2E984-5053-40A1-87CF-747A3510E7A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,10 +79,10 @@ Global
 		{B4D52573-1C74-4AE5-B204-C92774039AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4D52573-1C74-4AE5-B204-C92774039AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4D52573-1C74-4AE5-B204-C92774039AB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08DF38A7-A071-4B14-BD70-35B64089D014}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08DF38A7-A071-4B14-BD70-35B64089D014}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08DF38A7-A071-4B14-BD70-35B64089D014}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08DF38A7-A071-4B14-BD70-35B64089D014}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7E2E984-5053-40A1-87CF-747A3510E7A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7E2E984-5053-40A1-87CF-747A3510E7A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7E2E984-5053-40A1-87CF-747A3510E7A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7E2E984-5053-40A1-87CF-747A3510E7A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,7 +97,7 @@ Global
 		{297E01E8-99FF-48BD-9935-0CD0AF921422} = {025C5CDF-8881-4AE1-9AF1-EB1B47471464}
 		{682AA2B6-A856-45C1-89BF-1B11DE337F9F} = {326202D6-4F7C-4E85-A40E-AB1B2D976FF6}
 		{B4D52573-1C74-4AE5-B204-C92774039AB5} = {025C5CDF-8881-4AE1-9AF1-EB1B47471464}
-		{08DF38A7-A071-4B14-BD70-35B64089D014} = {025C5CDF-8881-4AE1-9AF1-EB1B47471464}
+		{E7E2E984-5053-40A1-87CF-747A3510E7A4} = {025C5CDF-8881-4AE1-9AF1-EB1B47471464}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {044B1528-7889-43C0-BE61-3D9B2A27E443}

@@ -55,13 +55,24 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
         public async Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeIdAsync(int employeeId, CancellationToken cancellationToken = default)
         {
             const string sql = @"
-                SELECT *
-                FROM merch_requests               
-                WHERE employeeId = ANY(@employeeId);";
+                SELECT
+                    merch_requests.id,
+                    merch_requests.employee_id,
+                    merch_requests.merch_type_id,
+                    merch_requests.merch_status_id,
+                    merch_requests.issue_date,
+                    merch_statuses.id,
+                    merch_statuses.name,
+                    merch_types.id,
+                    merch_types.name
+                FROM merch_requests      
+                INNER JOIN merch_types on merch_requests.merch_type_id = merch_types.id
+                INNER JOIN merch_statuses on merch_requests.merch_type_id = merch_statuses.id
+                WHERE merch_requests.employee_id = @EmployeeId;";
 
             var parameters = new
             {
-                employeeId
+                EmployeeId = employeeId
             };
 
             var commandDefinition = new CommandDefinition(
@@ -71,8 +82,14 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
                 cancellationToken: cancellationToken);
 
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-            var merchRequests = await connection.QueryAsync<Models.MerchRequest, Models.MerchType, GiveOutMerchRequest>(commandDefinition,
-                (merchRequest, merchType) => new GiveOutMerchRequest(merchRequest.EmployeeId, new MerchType(merchType.Id, merchType.Name)));
+
+            var merchRequests = await connection.QueryAsync<Models.MerchRequest, Models.MerchStatus, Models.MerchType, GiveOutMerchRequest>(commandDefinition,
+                (merchRequest, statusType, merchType) =>
+                    new GiveOutMerchRequest(
+                        merchRequest.EmployeeId,
+                        new MerchType(merchType.Id, merchType.Name),
+                        new RequestStatus(statusType.Id, statusType.Name),
+                        merchRequest.IssueDate));
 
             var result = merchRequests.ToList();
 

@@ -35,15 +35,12 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
         /// </summary>
         public MerchPack MerchPack { get; private set; }
 
-        protected GiveOutMerchRequest()
-        {
-            Status = RequestStatus.Draft;
-        }
-
-        public GiveOutMerchRequest(int employeeId, MerchType merchType) : this()
+        public GiveOutMerchRequest(int employeeId, MerchType merchType, RequestStatus? requestStatus = null, DateTime? issueDate = null)
         {
             EmployeeId = employeeId > 0 ? employeeId : throw new Exception("EmploeeId must be more 0");
             MerchType = merchType ?? throw new Exception("MerchType must be not null");
+            IssueDate = issueDate;
+            Status = requestStatus ?? RequestStatus.Draft;
         }
 
         /// <summary>

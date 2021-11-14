@@ -10,6 +10,8 @@ namespace MerchApi.Infrastructure.Repositories.Models
 
         public int MerchTypeId { get; set; }
 
+        public int MerchStatusId { get; set; }
+
         public DateTime? IssueDate { get; set; }
     }
 }
