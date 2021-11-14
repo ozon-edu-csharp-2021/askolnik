@@ -1,3 +1,4 @@
+
 using MerchApi.Infrastructure.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
