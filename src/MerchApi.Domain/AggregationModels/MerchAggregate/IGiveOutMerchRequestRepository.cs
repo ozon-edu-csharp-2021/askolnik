@@ -7,16 +7,16 @@ using MerchApi.Domain.SharedKernel.Interfaces;
 namespace MerchApi.Domain.AggregationModels.MerchAggregate
 {
     /// <summary>
-    /// Репозиторий для управления
+    /// Репозиторий для управления заявками
     /// </summary>
     public interface IGiveOutMerchRequestRepository : IRepository<GiveOutMerchRequest>
     {
         /// <summary>
-        /// Создать
+        /// Создать заявку на выдачу мерча сотруднику
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="request">Модель запроса</param>
+        /// <param name="cancellationToken">Токен для отмены операции</param>
+        /// <returns>Возвращает созданную заявку</returns>
         Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest request, CancellationToken cancellationToken);
 
         /// <summary>
