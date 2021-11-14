@@ -17,7 +17,7 @@ namespace MerchApi.Infrastructure.Stubs
             return Task.FromResult(itemToCreate);
         }
 
-        public Task<IList<GiveOutMerchRequest>> FindByEmployeeAsync(int employeeId, CancellationToken cancellationToken = default)
+        public Task<IList<GiveOutMerchRequest>> FindByEmployeeIdAsync(int employeeId, CancellationToken cancellationToken = default)
         {
             var response = new List<GiveOutMerchRequest>();
 
