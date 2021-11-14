@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-using OzonEdu.StockApi.Domain.Models;
+using MerchApi.Domain.SharedKernel.Models;
 
 namespace MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces
 {

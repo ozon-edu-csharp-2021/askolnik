@@ -1,9 +1,8 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
+using MerchApi.Domain.SharedKernel.Models;
 using MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
-
-using OzonEdu.StockApi.Domain.Models;
 
 namespace MerchApi.Infrastructure.Repositories.Infrastructure
 {
@@ -11,7 +10,6 @@ namespace MerchApi.Infrastructure.Repositories.Infrastructure
     {
         public IEnumerable<Entity> TrackedEntities => _usedEntitiesBackingField.ToArray();
 
-        // Можно заменить на любую другую имплементацию. Не только через ConcurrentBag
         private readonly ConcurrentBag<Entity> _usedEntitiesBackingField;
 
         public ChangeTracker()

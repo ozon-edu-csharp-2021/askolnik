@@ -7,18 +7,18 @@ namespace MerchApi.Infrastructure.Stubs
 {
     public class UnitOfWorkStub : IUnitOfWork
     {
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult(0);
-        }
-
-        public Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult(true);
-        }
         public void Dispose()
         {
+        }
 
+        public ValueTask StartTransaction(CancellationToken token)
+        {
+            return ValueTask.CompletedTask;
+        }
+
+        Task IUnitOfWork.SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 
 using MerchApi.Domain.Exceptions;
-using MerchApi.Domain.SharedKernel.Interfaces;
 using MerchApi.Domain.SharedKernel.Models;
 
 namespace MerchApi.Domain.AggregationModels.MerchAggregate
@@ -9,7 +8,7 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
     /// <summary>
     /// Заявка на выдачу мерча
     /// </summary>
-    public class GiveOutMerchRequest : Entity, IAggregateRoot
+    public class GiveOutMerchRequest : Entity
     {
         /// <summary>
         /// Статус заявки

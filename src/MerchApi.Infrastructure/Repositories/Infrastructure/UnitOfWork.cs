@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 using MediatR;
 
+using MerchApi.Domain.SharedKernel.Interfaces;
+using MerchApi.Infrastructure.Repositories.Infrastructure.Exceptions;
 using MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
 
 using Npgsql;
-
-using OzonEdu.StockApi.Domain.Contracts;
-using OzonEdu.StockApi.Infrastructure.Repositories.Infrastructure.Exceptions;
 
 namespace MerchApi.Infrastructure.Repositories.Infrastructure
 {
@@ -19,7 +18,7 @@ namespace MerchApi.Infrastructure.Repositories.Infrastructure
     {
         private NpgsqlTransaction _npgsqlTransaction;
 
-        private readonly IDbConnectionFactory<NpgsqlConnection> _dbConnectionFactory = null;
+        private readonly IDbConnectionFactory<NpgsqlConnection> _dbConnectionFactory;
         private readonly IPublisher _publisher;
         private readonly IChangeTracker _changeTracker;
 
@@ -39,6 +38,7 @@ namespace MerchApi.Infrastructure.Repositories.Infrastructure
             {
                 return;
             }
+
             var connection = await _dbConnectionFactory.CreateConnection(token);
             _npgsqlTransaction = await connection.BeginTransactionAsync(token);
         }
@@ -58,7 +58,7 @@ namespace MerchApi.Infrastructure.Repositories.Infrastructure
                         x.ClearDomainEvents();
                         return events;
                     }));
-            // Можно отправлять все и сразу через Task.WhenAll.
+
             while (domainEvents.TryDequeue(out var notification))
             {
                 await _publisher.Publish(notification, cancellationToken);

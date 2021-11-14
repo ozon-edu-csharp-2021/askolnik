@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 
 using MerchApi.Domain.AggregationModels.MerchAggregate;
+using MerchApi.Domain.SharedKernel.Interfaces;
 using MerchApi.Infrastructure.Commands.MerchAggregate;
 
 using Microsoft.Extensions.Logging;
@@ -16,13 +17,16 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
     {
         private readonly ILogger<GiveOutMerchCommandHandler> _logger;
         private readonly IGiveOutMerchRequestRepository _merchRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public GiveOutMerchCommandHandler(
             ILogger<GiveOutMerchCommandHandler> logger,
-            IGiveOutMerchRequestRepository merchRepository)
+            IGiveOutMerchRequestRepository merchRepository,
+            IUnitOfWork unitOfWork)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _merchRepository = merchRepository ?? throw new ArgumentNullException(nameof(merchRepository));
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -47,7 +51,7 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
             giveOutMerchRequest.Register();
 
             await _merchRepository.CreateAsync(giveOutMerchRequest, cancellationToken);
-            await _merchRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

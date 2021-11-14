@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using MerchApi.Domain.AggregationModels.MerchAggregate;
-using MerchApi.Domain.SharedKernel.Interfaces;
 using MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
 
 using Npgsql;
@@ -14,6 +13,7 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
     {
         private readonly IDbConnectionFactory<NpgsqlConnection> _dbConnectionFactory;
         private readonly IChangeTracker _changeTracker;
+        private const int Timeout = 5;
 
         public GiveOutMerchRequestRepository(
             IDbConnectionFactory<NpgsqlConnection> dbConnectionFactory,
@@ -23,14 +23,12 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
             _changeTracker = changeTracker;
         }
 
-        public IUnitOfWork UnitOfWork => throw new System.NotImplementedException();
-
         public Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IList<GiveOutMerchRequest>> FindByEmployeeAsync(int employeeId, CancellationToken cancellationToken = default)
+        public Task<IList<GiveOutMerchRequest>> FindByEmployeeIdAsync(int employeeId, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();
         }

@@ -12,6 +12,14 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
     public interface IGiveOutMerchRequestRepository : IRepository<GiveOutMerchRequest>
     {
         /// <summary>
+        /// Создать
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest request, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Найти выданные мерчи по сотруднику
         /// </summary>
         /// <param name="employeeId">Идентификатор сотрудника</param>

@@ -5,6 +5,7 @@ using MerchApi.Domain.SharedKernel.Interfaces;
 using MerchApi.GrpcServices;
 using MerchApi.Infrastructure.Configuration;
 using MerchApi.Infrastructure.Extensions;
+using MerchApi.Infrastructure.Repositories.Implementation;
 using MerchApi.Infrastructure.Repositories.Infrastructure;
 using MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
 using MerchApi.Infrastructure.Stubs;
@@ -52,7 +53,7 @@ namespace MerchApi
         {
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             services.AddScoped<IGiveOutMerchRequestRepository, GiveOutMerchRequestRepository>();
-            services.AddSingleton<IGiveOutMerchRequestRepository, GiveOutMerchRequestRepositoryStub>();
+            //services.AddSingleton<IGiveOutMerchRequestRepository, GiveOutMerchRequestRepositoryStub>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,17 +1,13 @@
-﻿using MerchApi.Domain.AggregationModels.EmployeeAggregate;
-using MerchApi.Domain.AggregationModels.MerchAggregate;
-using MerchApi.Domain.SharedKernel.Interfaces;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+
+using MerchApi.Domain.AggregationModels.MerchAggregate;
 
 namespace MerchApi.Infrastructure.Stubs
 {
     public class GiveOutMerchRequestRepositoryStub : IGiveOutMerchRequestRepository
     {
-        public IUnitOfWork UnitOfWork => new UnitOfWorkStub();
-
         public Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(itemToCreate);
