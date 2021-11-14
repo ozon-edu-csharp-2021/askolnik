@@ -21,10 +21,5 @@ namespace MerchApi.Infrastructure.Extensions
 
             return services;
         }
-
-        public static void AddMediator(IServiceCollection services)
-        {
-            services.AddMediatR();
-        }
     }
 }
