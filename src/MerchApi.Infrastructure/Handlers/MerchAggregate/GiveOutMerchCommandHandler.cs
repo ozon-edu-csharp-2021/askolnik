@@ -35,7 +35,7 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
         {
             _logger.LogDebug($"[{nameof(GiveOutMerchCommandHandler)}] Обработка запроса на выдачу мерча");
 
-            var issuedMerches = await _merchRepository.FindByEmployeeAsync(command.Request.EmployeeId, cancellationToken);
+            var issuedMerches = await _merchRepository.FindByEmployeeIdAsync(command.Request.EmployeeId, cancellationToken);
             var merchType = GetMerchType(command.Request);
 
             if (issuedMerches.Select(x => x.MerchType).Contains(merchType))
