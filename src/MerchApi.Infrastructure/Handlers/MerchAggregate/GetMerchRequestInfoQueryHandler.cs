@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using MerchApi.Domain.AggregationModels.EmployeeAggregate;
 using MerchApi.Domain.AggregationModels.MerchAggregate;
 using MerchApi.Http.Models;
 using MerchApi.Http.Responses;
@@ -14,26 +13,29 @@ using Microsoft.Extensions.Logging;
 
 namespace MerchApi.Infrastructure.Handlers.MerchAggregate
 {
-    public class GetMerchRequestInfoCommandHandler : IRequestHandler<GetMerchRequestInfoCommand, GetMerchRequestInfoResponse>
+    public class GetMerchRequestInfoQueryHandler : IRequestHandler<GetMerchRequestInfoQuery, GetMerchRequestInfoResponse>
     {
-        private readonly ILogger<GetMerchRequestInfoCommandHandler> _logger;
+        private readonly ILogger<GetMerchRequestInfoQueryHandler> _logger;
         private readonly IGiveOutMerchRequestRepository _merchRepository;
 
-        public GetMerchRequestInfoCommandHandler(
-            ILogger<GetMerchRequestInfoCommandHandler> logger,
+        public GetMerchRequestInfoQueryHandler(
+            ILogger<GetMerchRequestInfoQueryHandler> logger,
             IGiveOutMerchRequestRepository merchRepository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _merchRepository = merchRepository ?? throw new ArgumentNullException(nameof(merchRepository));
         }
 
-        public async Task<GetMerchRequestInfoResponse> Handle(GetMerchRequestInfoCommand request, CancellationToken cancellationToken)
+        public async Task<GetMerchRequestInfoResponse> Handle(GetMerchRequestInfoQuery request, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"[{nameof(GetMerchRequestInfoCommandHandler)}] Проверка, выдавался ли мерч");
+            _logger.LogDebug($"[{nameof(GetMerchRequestInfoQueryHandler)}] Проверка, выдавался ли мерч");
 
-            var issuedMerches = await _merchRepository.FindByEmployeeAsync(new Employee(request.EmployeeId), cancellationToken);
+            var issuedMerches = await _merchRepository.FindByEmployeeAsync(request.EmployeeId, cancellationToken);
+
             if (issuedMerches is null || issuedMerches.Count == 0)
+            {
                 throw new Exception($"Not found for EmployeeId = '{request.EmployeeId}'");
+            }
 
             var response = new GetMerchRequestInfoResponse();
 

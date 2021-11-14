@@ -39,7 +39,7 @@ namespace MerchApi
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<MerchApiGrpService>();
+                endpoints.MapGrpcService<MerchApiGrpcService>();
                 endpoints.MapControllers();
             });
         }

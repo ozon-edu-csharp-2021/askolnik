@@ -72,7 +72,7 @@ namespace MerchApi.Controllers
         {
             _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча для сотрудника = '{employeeId}'");
 
-            var query = new GetMerchRequestInfoCommand(employeeId);
+            var query = new GetMerchRequestInfoQuery(employeeId);
             var response = await _mediator.Send(query, token);
 
             return StatusCode((int)HttpStatusCode.OK, response);

@@ -6,9 +6,9 @@ using MerchApi.Grpc;
 
 namespace MerchApi.GrpcServices
 {
-    public class MerchApiGrpService : MerchApiGrpc.MerchApiGrpcBase
+    public class MerchApiGrpcService : MerchApiGrpc.MerchApiGrpcBase
     {
-        public MerchApiGrpService()
+        public MerchApiGrpcService()
         {
         }
 
