@@ -13,7 +13,7 @@ namespace MerchApi.Infrastructure.Stubs
             return Task.FromResult(itemToCreate);
         }
 
-        public Task<IList<GiveOutMerchRequest>> FindByEmployeeIdAsync(int employeeId, CancellationToken cancellationToken = default)
+        public Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeIdAsync(int employeeId, CancellationToken cancellationToken = default)
         {
             var response = new List<GiveOutMerchRequest>();
 
@@ -35,7 +35,7 @@ namespace MerchApi.Infrastructure.Stubs
                     break;
             }
 
-            return Task.FromResult<IList<GiveOutMerchRequest>>(response);
+            return Task.FromResult<IReadOnlyList<GiveOutMerchRequest>>(response);
         }
 
         public Task<GiveOutMerchRequest> UpdateAsync(GiveOutMerchRequest itemToUpdate, CancellationToken cancellationToken = default)

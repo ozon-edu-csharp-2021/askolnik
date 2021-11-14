@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -51,9 +52,36 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
             return itemToCreate;
         }
 
-        public Task<IList<GiveOutMerchRequest>> FindByEmployeeIdAsync(int employeeId, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeIdAsync(int employeeId, CancellationToken cancellationToken = default)
         {
-            throw new System.NotImplementedException();
+            const string sql = @"
+                SELECT *
+                FROM merch_requests               
+                WHERE employeeId = ANY(@employeeId);";
+
+            var parameters = new
+            {
+                employeeId
+            };
+
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            var merchRequests = await connection.QueryAsync<Models.MerchRequest, Models.MerchType, GiveOutMerchRequest>(commandDefinition,
+                (merchRequest, merchType) => new GiveOutMerchRequest(merchRequest.EmployeeId, new MerchType(merchType.Id, merchType.Name)));
+
+            var result = merchRequests.ToList();
+
+            foreach (var stockItem in result)
+            {
+                _changeTracker.Track(stockItem);
+            }
+
+            return result;
         }
     }
 }
