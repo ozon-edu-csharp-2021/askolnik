@@ -26,17 +26,14 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
             _changeTracker = changeTracker;
         }
 
+        //TODO:
         public async Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken = default)
         {
-            const string sql = @"
-                INSERT INTO skus (id, name, item_type_id, clothing_size)
-                VALUES (@SkuId, @Name, @ItemTypeId, @ClothingSize);
-                INSERT INTO stocks (sku_id, quantity, minimal_quantity)
-                VALUES (@SkuId, @Quantity, @MinimalQuantity);";
+            const string sql = @"";
 
             var parameters = new
             {
-                SkuId = itemToCreate.EmployeeId
+               // SkuId = itemToCreate.EmployeeId
             };
 
             var commandDefinition = new CommandDefinition(
