@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using MerchApi.Domain.Exceptions;
 using MerchApi.Domain.SharedKernel.Models;
@@ -43,6 +44,16 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
             Status = requestStatus ?? RequestStatus.Draft;
         }
 
+        public void LoadMerchPack(IEnumerable<Item> items)
+        {
+            if (!Status.Equals(RequestStatus.Created))
+            {
+                throw new RequestStatusException($"Request is not created. Change MerchPack unavailable");
+            }
+
+            MerchPack = new MerchPack(items);
+        }
+
         /// <summary>
         /// Смена статуса у заявки
         /// </summary>
@@ -51,7 +62,9 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
         public void ChangeStatus(RequestStatus status)
         {
             if (Status.Equals(RequestStatus.Done))
+            {
                 throw new RequestStatusException($"Request is done. Change status unavailable");
+            }
 
             Status = status;
         }

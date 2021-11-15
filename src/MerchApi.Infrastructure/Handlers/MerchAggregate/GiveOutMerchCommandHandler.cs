@@ -44,7 +44,7 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
 
             if (issuedMerches.Select(x => x.MerchType).Contains(merchType))
             {
-                throw new ArgumentException($"Невозможно поворно выдать мерч типа = '{merchType.Name}'");
+                throw new ArgumentException($"Невозможно повторно выдать мерч типа = '{merchType.Name}'");
             }
 
             var giveOutMerchRequest = new GiveOutMerchRequest(command.Request.EmployeeId, merchType);

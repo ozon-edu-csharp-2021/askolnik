@@ -67,7 +67,7 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
                     merch_types.name
                 FROM merch_requests      
                 INNER JOIN merch_types on merch_requests.merch_type_id = merch_types.id
-                INNER JOIN merch_statuses on merch_requests.merch_type_id = merch_statuses.id
+                INNER JOIN merch_statuses on merch_requests.merch_status_id = merch_statuses.id
                 WHERE merch_requests.employee_id = @EmployeeId;";
 
             var parameters = new
@@ -93,9 +93,25 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
 
             var result = merchRequests.ToList();
 
-            foreach (var stockItem in result)
+            foreach (var merchRequest in result)
             {
-                _changeTracker.Track(stockItem);
+                var subSql = $@"
+                    SELECT
+                        items.id,
+                        items.merch_type_id,
+                        items.name
+                    FROM items      
+                    WHERE items.merch_type_id = {merchRequest.MerchType.Id};";
+
+                var definition = new CommandDefinition(
+                    subSql,
+                    commandTimeout: Timeout,
+                    cancellationToken: cancellationToken);
+
+                var items = await connection.QueryAsync<Models.Item>(definition);
+                merchRequest.LoadMerchPack(items.Select(x => new Item(x.MerchTypeId, x.Name)));
+
+                _changeTracker.Track(merchRequest);
             }
 
             return result;

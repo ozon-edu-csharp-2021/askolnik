@@ -7,15 +7,17 @@ namespace MerchApi.Migrator.Migrations
     {
         public override void Up()
         {
-            Create
-             .Table("merch_statuses")
-             .WithColumn("id").AsInt32().PrimaryKey()
-             .WithColumn("name").AsString().NotNullable();
+            Execute.Sql(@"
+                CREATE TABLE IF NOT EXISTS merch_statuses(
+                    id serial NOT NULL,
+                    name character varying NOT NULL,
+                    PRIMARY KEY (id));"
+            );
         }
 
         public override void Down()
         {
-            Delete.Table("merch_statuses");
+            Execute.Sql("DROP TABLE IF EXISTS merch_statuses;");
         }
     }
 }

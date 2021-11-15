@@ -9,7 +9,8 @@ namespace MerchApi.Domain.AggregationModels.MerchAggregate
     {
         private List<Item> Items { get; }
 
-        public MerchPack(IEnumerable<Item> items) => Items = new List<Item>(items);
+        public MerchPack(IEnumerable<Item> items) =>
+            Items = new List<Item>(items);
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

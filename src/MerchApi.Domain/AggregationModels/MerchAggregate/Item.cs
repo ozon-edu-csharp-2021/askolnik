@@ -1,34 +1,26 @@
-﻿using System.Collections.Generic;
-
-using MerchApi.Domain.SharedKernel.Models;
+﻿using MerchApi.Domain.SharedKernel.Models;
 
 namespace MerchApi.Domain.AggregationModels.MerchAggregate
 {
     /// <summary>
     /// Товар
     /// </summary>
-    public class Item : ValueObject
+    public class Item : Entity
     {
         /// <summary>
-        /// Категория товара
+        /// К какому типу мерча относится товар
         /// </summary>
-        public int Category { get; }
+        public int MerchTypeId { get; }
 
         /// <summary>
         /// Наименование товара 
         /// </summary>
         public string Name { get; }
 
-        public Item(int category, string name)
+        public Item(int merchTypeId, string name)
         {
-            Category = category;
+            MerchTypeId = merchTypeId;
             Name = name;
-        }
-
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Category;
-            yield return Name;
         }
     }
 }
