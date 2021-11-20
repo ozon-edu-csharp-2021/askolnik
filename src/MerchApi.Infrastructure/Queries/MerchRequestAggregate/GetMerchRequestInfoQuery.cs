@@ -2,7 +2,7 @@
 
 using MerchApi.Http.Responses;
 
-namespace MerchApi.Infrastructure.Queries.MerchAggregate
+namespace MerchApi.Infrastructure.Queries.MerchRequestAggregate
 {
     public class GetMerchRequestInfoQuery : IRequest<GetMerchRequestInfoResponse>
     {

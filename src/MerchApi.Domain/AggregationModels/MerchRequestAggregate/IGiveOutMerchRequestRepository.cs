@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using MerchApi.Domain.SharedKernel.Interfaces;
 
-namespace MerchApi.Domain.AggregationModels.MerchAggregate
+namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
 {
     /// <summary>
     /// Репозиторий для управления заявками

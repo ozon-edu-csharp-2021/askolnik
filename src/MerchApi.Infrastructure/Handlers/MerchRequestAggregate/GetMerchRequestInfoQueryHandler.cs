@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using MerchApi.Domain.AggregationModels.MerchAggregate;
+using MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using MerchApi.Http.Models;
 using MerchApi.Http.Responses;
-using MerchApi.Infrastructure.Queries.MerchAggregate;
+using MerchApi.Infrastructure.Queries.MerchRequestAggregate;
 
 using Microsoft.Extensions.Logging;
 
-namespace MerchApi.Infrastructure.Handlers.MerchAggregate
+namespace MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 {
     public class GetMerchRequestInfoQueryHandler : IRequestHandler<GetMerchRequestInfoQuery, GetMerchRequestInfoResponse>
     {
@@ -41,13 +41,13 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
 
             foreach (var item in issuedMerches)
             {
-                if (Enum.TryParse<Http.Enums.MerchType>(item.MerchType.Name, out var merchType))
+                if (Enum.TryParse<Http.Enums.MerchType>(item.MerchPack.MerchType.Name, out var merchType))
                 {
                     response.IssuedMerchs.Add(new MerchIssueInfo(item.EmployeeId, item.IssueDate, merchType));
                 }
                 else
                 {
-                    throw new InvalidCastException($"Не смог привести '{item.MerchType.Name}' к типу '{typeof(Http.Enums.MerchType).FullName}'");
+                    throw new InvalidCastException($"Не смог привести '{item.MerchPack.MerchType.Name}' к типу '{typeof(Http.Enums.MerchType).FullName}'");
                 }
             }
 

@@ -9,6 +9,8 @@ namespace MerchApi.Http.Requests
     {
         public int EmployeeId { get; init; }
 
+        public string EmployeeEmail { get; init; }
+
         public MerchType MerchType { get; init; }
     }
 }

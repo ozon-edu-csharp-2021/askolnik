@@ -1,17 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using MediatR;
 
-using MerchApi.Domain.AggregationModels.MerchAggregate;
+using MerchApi.Domain.AggregationModels.MerchPackAggregate;
+using MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using MerchApi.Domain.SharedKernel.Interfaces;
-using MerchApi.Infrastructure.Commands.MerchAggregate;
+using MerchApi.Infrastructure.Commands.MerchRequestAggregate;
 
 using Microsoft.Extensions.Logging;
 
-namespace MerchApi.Infrastructure.Handlers.MerchAggregate
+namespace MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 {
     public class GiveOutMerchCommandHandler : IRequestHandler<GiveOutMerchCommand>
     {
@@ -42,18 +44,25 @@ namespace MerchApi.Infrastructure.Handlers.MerchAggregate
             var issuedMerches = await _merchRepository.FindByEmployeeIdAsync(command.Request.EmployeeId, cancellationToken);
             var merchType = GetMerchType(command.Request);
 
-            if (issuedMerches.Select(x => x.MerchType).Contains(merchType))
+            foreach (var issuedMerch in issuedMerches)
             {
-                throw new ArgumentException($"Невозможно повторно выдать мерч типа = '{merchType.Name}'");
+                if (issuedMerch.MerchPack.MerchType == merchType)
+                {
+                    throw new ArgumentException($"Невозможно повторно выдать мерч типа = '{merchType.Name}'");
+                }
             }
 
-            var giveOutMerchRequest = new GiveOutMerchRequest(command.Request.EmployeeId, merchType);
+            var giveOutMerchRequest = GiveOutMerchRequest.Create(command.Request.EmployeeId, RequestStatus.Created, new MerchPack(merchType, GetSkus(merchType)), DateTime.UtcNow);
 
             await _merchRepository.CreateAsync(giveOutMerchRequest, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            giveOutMerchRequest.ChangeStatus(RequestStatus.Created);
             return Unit.Value;
+        }
+
+        private IReadOnlyCollection<Sku> GetSkus(MerchType merchType)
+        {
+            throw new NotImplementedException();
         }
 
         private static MerchType GetMerchType(Http.Requests.GiveOutMerchRequest request)

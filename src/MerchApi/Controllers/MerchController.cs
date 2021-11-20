@@ -8,8 +8,8 @@ using MediatR;
 
 using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
-using MerchApi.Infrastructure.Commands.MerchAggregate;
-using MerchApi.Infrastructure.Queries.MerchAggregate;
+using MerchApi.Infrastructure.Commands.MerchRequestAggregate;
+using MerchApi.Infrastructure.Queries.MerchRequestAggregate;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

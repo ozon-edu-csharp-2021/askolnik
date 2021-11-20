@@ -1,6 +1,6 @@
 using MediatR;
 
-using MerchApi.Domain.AggregationModels.MerchAggregate;
+using MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using MerchApi.Domain.SharedKernel.Interfaces;
 using MerchApi.GrpcServices;
 using MerchApi.Infrastructure.Configuration;

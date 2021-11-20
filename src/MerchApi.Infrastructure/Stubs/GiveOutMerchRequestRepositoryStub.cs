@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MerchApi.Domain.AggregationModels.MerchAggregate;
+using MerchApi.Domain.AggregationModels.MerchPackAggregate;
+using MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 
 namespace MerchApi.Infrastructure.Stubs
 {
@@ -20,18 +22,13 @@ namespace MerchApi.Infrastructure.Stubs
             switch (employeeId)
             {
                 case 1:
-                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.WelcomePack));
+                    var type1 = MerchType.WelcomePack;
+                    response.Add(GiveOutMerchRequest.Create(employeeId, RequestStatus.Created, new MerchPack(type1, GetSkus(type1)), DateTime.UtcNow));
                     break;
 
                 case 2:
-                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.WelcomePack));
-                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.ProbationPeriodEndingPack));
-                    break;
-
-                case 3:
-                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.WelcomePack));
-                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.ProbationPeriodEndingPack));
-                    response.Add(new GiveOutMerchRequest(employeeId, MerchType.VeteranPack));
+                    var type2 = MerchType.VeteranPack;
+                    response.Add(GiveOutMerchRequest.Create(employeeId, RequestStatus.Created, new MerchPack(type2, GetSkus(type2)), DateTime.UtcNow));
                     break;
             }
 
@@ -41,6 +38,38 @@ namespace MerchApi.Infrastructure.Stubs
         public Task<GiveOutMerchRequest> UpdateAsync(GiveOutMerchRequest itemToUpdate, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(itemToUpdate);
+        }
+
+        private static List<Sku> GetSkus(MerchType merchType)
+        {
+            var skus = new List<Sku>();
+
+            if (merchType == MerchType.WelcomePack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(1), Sku.Create(2) });
+            }
+
+            if (merchType == MerchType.ProbationPeriodEndingPack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(3) });
+            }
+
+            if (merchType == MerchType.ConferenceListenerPack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(4), Sku.Create(5) });
+            }
+
+            if (merchType == MerchType.ConferenceSpeakerPack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(6), Sku.Create(7), Sku.Create(8) });
+            }
+
+            if (merchType == MerchType.VeteranPack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(9), Sku.Create(10) });
+            }
+
+            return skus;
         }
     }
 }
