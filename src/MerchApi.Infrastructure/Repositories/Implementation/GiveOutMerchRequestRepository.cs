@@ -85,25 +85,41 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
                 cancellationToken: cancellationToken);
 
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            var orderDictionary = new Dictionary<int, GiveOutMerchRequest>();
 
-            var result = await _queryExecutor.Execute(
-                () =>
-                    connection.QueryAsync<
-                        Models.MerchRequest, Models.MerchStatus, Models.MerchPack, Models.MerchType, Models.Sku, GiveOutMerchRequest>(
-                        commandDefinition,
-                        (merchRequest, status, pack, type, skus) => GiveOutMerchRequest.Create(
-                            Employee.Create(Email.Create(merchRequest.EmployeeEmail)),
-                            new RequestStatus(status.Id, status.Name),
-                            new MerchPack(
-                                new MerchType(type.Id, type.Name),
-                                new List<Sku>(),
-                                pack.CanBeReissued,
-                                pack.CanBeReissuedAfterDays),
-                            merchRequest.CreateDate,
-                            merchRequest.IssueDate
-                            )));
+            var result = await _queryExecutor.Execute<GiveOutMerchRequest>(
+                  async () =>
+                  {
+                      var list = (await connection.QueryAsync<
+                          Models.MerchRequest, Models.MerchStatus, Models.MerchPack, Models.MerchType, Models.Sku, GiveOutMerchRequest>(
+                          commandDefinition,
+                          (merchRequest, status, pack, type, sku) =>
+                          {
+                              if (!orderDictionary.TryGetValue(merchRequest.Id, out GiveOutMerchRequest orderEntry))
+                              {
+                                  orderEntry = GiveOutMerchRequest.Create(
+                                      merchRequest.Id,
+                                      Employee.Create(Email.Create(merchRequest.EmployeeEmail)),
+                                      new RequestStatus(status.Id, status.Name),
+                                      new MerchPack(
+                                          new MerchType(type.Id, type.Name),
+                                          new List<Sku>(),
+                                          pack.CanBeReissued,
+                                          pack.CanBeReissuedAfterDays),
+                                      merchRequest.CreateDate,
+                                      merchRequest.IssueDate
+                                      );
 
+                                  orderDictionary.Add(orderEntry.Id, orderEntry);
+                              }
 
+                              orderEntry.MerchPack.AddSkuToMerchPack(new List<Sku>() { Sku.Create(sku.Value) });
+                              return orderEntry;
+                          },
+                          splitOn: "Id")).Distinct().ToList();
+
+                      return list;
+                  });
 
             return result.ToList();
         }

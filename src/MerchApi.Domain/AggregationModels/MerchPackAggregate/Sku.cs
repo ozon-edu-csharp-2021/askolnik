@@ -17,11 +17,11 @@ namespace MerchApi.Domain.AggregationModels.MerchPackAggregate
             Value = value;
         }
 
-        public static Sku Create(int merchTypeId)
+        public static Sku Create(int value)
         {
-            if (merchTypeId > 0)
+            if (value > 0)
             {
-                return new Sku(merchTypeId);
+                return new Sku(value);
             }
 
             throw new ItemException("ItemId is invalid!");

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using MerchApi.Domain.SharedKernel.Models;
 
@@ -42,6 +43,19 @@ namespace MerchApi.Domain.AggregationModels.MerchPackAggregate
             if (canBeReissued)
             {
                 CanBeReissuedAfterDays = canBeReissuedAfterDays;
+            }
+        }
+
+        public void AddSkuToMerchPack(IReadOnlyCollection<Sku> newSkus)
+        {
+            var intersect = SkuCollection
+                                .Select(c => c.Value)
+                                .Intersect(newSkus.Select(x => x.Value).ToArray())
+                                .ToArray();
+
+            if (intersect.Length == 0)
+            {
+                SkuCollection = SkuCollection.Union(newSkus).ToList();
             }
         }
     }

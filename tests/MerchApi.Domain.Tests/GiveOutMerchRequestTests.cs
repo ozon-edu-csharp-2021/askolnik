@@ -16,7 +16,7 @@ namespace MerchApi.Domain.Tests
             //Arrange 
             var employee = Employee.Create(Email.Create("test@test.ru"));
             var merchType = MerchType.WelcomePack;
-            var request = GiveOutMerchRequest.Create(
+            var request = GiveOutMerchRequest.Create(1,
              employee,
              RequestStatus.Created,
              new MerchPack(merchType, GetSkus(merchType)),

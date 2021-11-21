@@ -38,12 +38,14 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
         public MerchPack MerchPack { get; private set; }
 
         private GiveOutMerchRequest(
+            int id,
             Employee employee,
             RequestStatus requestStatus,
             MerchPack merchPack,
             DateTime createdDate,
             DateTime? issueDate = null)
         {
+            Id = id;
             Employee = employee;
             MerchPack = merchPack;
             CreatedDate = createdDate;
@@ -52,18 +54,24 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
         }
 
         public static GiveOutMerchRequest Create(
+            int id,
             Employee employee,
             RequestStatus requestStatus,
             MerchPack merchPack,
             DateTime createdDate,
             DateTime? issueDate = null)
         {
+            if (id <= 0)
+            {
+                throw new GiveOutMerchException("Id is invalid!");
+            }
+
             if (string.IsNullOrEmpty(employee.Email.Value))
             {
                 throw new GiveOutMerchException("Email is invalid!");
             }
 
-            return new GiveOutMerchRequest(employee, requestStatus, merchPack, createdDate, issueDate);
+            return new GiveOutMerchRequest(id, employee, requestStatus, merchPack, createdDate, issueDate);
         }
 
         /// <summary>
