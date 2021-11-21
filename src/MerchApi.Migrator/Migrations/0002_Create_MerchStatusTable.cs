@@ -3,7 +3,7 @@
 namespace MerchApi.Migrator.Migrations
 {
     [Migration(2)]
-    public class MerchStatusesTable : Migration
+    public class MerchStatusTable : Migration
     {
         public override void Up()
         {

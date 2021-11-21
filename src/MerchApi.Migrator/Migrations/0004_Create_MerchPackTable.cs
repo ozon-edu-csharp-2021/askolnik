@@ -2,25 +2,24 @@
 
 namespace MerchApi.Migrator.Migrations
 {
-    [Migration(1)]
-    public class MerchRequestsTable : Migration
+    [Migration(4)]
+    public class MerchPackTable : Migration
     {
         public override void Up()
         {
             Execute.Sql(@"
-                CREATE TABLE IF NOT EXISTS merch_requests(
+                CREATE TABLE IF NOT EXISTS merch_packes(
                     id serial NOT NULL,
-                    employee_id integer NOT NULL,
                     merch_type_id integer NOT NULL,
-                    merch_status_id integer NOT NULL,
-                    issue_date time without time zone,
+                    can_be_reissued boolean NOT NULL,
+                    can_be_reissued_after_days integer,
                     PRIMARY KEY (id));"
             );
         }
 
         public override void Down()
         {
-            Execute.Sql("DROP TABLE IF EXISTS merch_requests;");
+            Execute.Sql("DROP TABLE IF EXISTS merch_packes;");
         }
     }
 }
