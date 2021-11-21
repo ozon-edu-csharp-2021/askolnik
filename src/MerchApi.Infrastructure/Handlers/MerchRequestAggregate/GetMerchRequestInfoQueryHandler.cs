@@ -43,7 +43,7 @@ namespace MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             {
                 if (Enum.TryParse<Http.Enums.MerchType>(item.MerchPack.MerchType.Name, out var merchType))
                 {
-                    response.IssuedMerchs.Add(new MerchIssueInfo(item.IssueDate, merchType));
+                    response.IssuedMerchs.Add(new MerchIssueInfo(item.CreatedDate, merchType, item.MerchPack, item.IssueDate));
                 }
                 else
                 {

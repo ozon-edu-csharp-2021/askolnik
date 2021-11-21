@@ -5,7 +5,7 @@ namespace MerchApi.Http.Requests
     /// <summary>
     /// Запрос от Админки на выдачу мерча сотруднику
     /// </summary>
-    public class GiveOutMerchRequest
+    public record GiveOutMerchRequest
     {
         public int EmployeeId { get; init; }
 
