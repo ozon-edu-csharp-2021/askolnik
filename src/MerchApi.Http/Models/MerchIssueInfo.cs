@@ -9,14 +9,14 @@ namespace MerchApi.Http.Models
         public DateTime CreateDate { get; }
         public DateTime? IssueDate { get; }
         public MerchType MerchType { get; }
-        public object MerchPack { get; }
+        public object MerchPackInfo { get; }
 
-        public MerchIssueInfo(DateTime createDate, MerchType merchType, object merchPack, DateTime? issueDate = null)
+        public MerchIssueInfo(DateTime createDate, MerchType merchType, object merchPackInfo, DateTime? issueDate = null)
         {
             IssueDate = issueDate;
             MerchType = merchType;
             CreateDate = createDate;
-            MerchPack = merchPack;
+            MerchPackInfo = merchPackInfo;
         }
     }
 }
