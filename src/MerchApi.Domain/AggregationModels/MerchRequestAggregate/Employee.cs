@@ -14,9 +14,12 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
         /// </summary>
         public Email Email { get; }
 
-        public Employee(Email email)
-        {
+        private Employee(Email email) =>
             Email = email;
+
+        public static Employee Create(Email email)
+        {
+            return new Employee(email);
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

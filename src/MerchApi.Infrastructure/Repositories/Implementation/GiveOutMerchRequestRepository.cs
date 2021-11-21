@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Dapper;
 
+using MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
 
@@ -16,25 +17,65 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
     public class GiveOutMerchRequestRepository : IGiveOutMerchRequestRepository
     {
         private readonly IDbConnectionFactory<NpgsqlConnection> _dbConnectionFactory;
-        private readonly IChangeTracker _changeTracker;
+        private readonly IQueryExecutor _queryExecutor;
         private const int Timeout = 5;
 
         public GiveOutMerchRequestRepository(
             IDbConnectionFactory<NpgsqlConnection> dbConnectionFactory,
-            IChangeTracker changeTracker)
+            IQueryExecutor queryExecutor)
         {
             _dbConnectionFactory = dbConnectionFactory;
-            _changeTracker = changeTracker;
+            _queryExecutor = queryExecutor;
         }
 
         //TODO:
         public async Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken = default)
         {
-            const string sql = @"";
+            throw new Exception();
+            //const string sql = @"
+            //    INSERT INTO skus (id, name, item_type_id, clothing_size)
+            //    VALUES (@SkuId, @Name, @ItemTypeId, @ClothingSize);
+            //    INSERT INTO stocks (sku_id, quantity, minimal_quantity)
+            //    VALUES (@SkuId, @Quantity, @MinimalQuantity);";
+
+            //var parameters = new
+            //{
+            //    SkuId = itemToCreate.Sku.Value,
+            //    Name = itemToCreate.Name.Value,
+            //    ItemTypeId = itemToCreate.ItemType.Type.Id,
+            //    ClothingSize = itemToCreate.ClothingSize?.Id,
+            //    Quantity = itemToCreate.Quantity.Value,
+            //    MinimalQuantity = itemToCreate.MinimalQuantity.Value
+            //};
+            //var commandDefinition = new CommandDefinition(
+            //    sql,
+            //    parameters: parameters,
+            //    commandTimeout: Timeout,
+            //    cancellationToken: cancellationToken);
+            //var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            //await connection.ExecuteAsync(commandDefinition);
+            //return await _queryExecutor.Execute(itemToCreate, () => connection.ExecuteAsync(commandDefinition));
+
+        }
+
+        public async Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeEmailAsync(string employeeEmail, CancellationToken cancellationToken = default)
+        {
+            const string sql = @"
+                SELECT mr.id, mr.request_status_id, mr.employee_email, mr.merch_pack_id, mr.create_date, mr.issue_date,
+		                rs.id, rs.name,
+		                mp.id, mp.merch_type_id, mp.can_be_reissued, mp.can_be_reissued_after_days,
+		                mt.id, mt.name,
+		                sk.id, sk.value
+                FROM merch_requests mr
+                INNER JOIN merch_request_statuses rs ON rs.id = mr.request_status_id
+                INNER JOIN merch_packes mp ON mp.id = mr.merch_pack_id
+                INNER JOIN merch_types mt ON mt.id = mp.merch_type_id
+                INNER JOIN skus sk ON sk.merch_pack_id = mp.id
+                WHERE mr.employee_email = @Email;";
 
             var parameters = new
             {
-                // SkuId = itemToCreate.EmployeeId
+                Email = employeeEmail
             };
 
             var commandDefinition = new CommandDefinition(
@@ -44,77 +85,27 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
                 cancellationToken: cancellationToken);
 
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-            await connection.ExecuteAsync(commandDefinition);
-            _changeTracker.Track(itemToCreate);
 
-            return itemToCreate;
-        }
+            var result = await _queryExecutor.Execute(
+                () =>
+                    connection.QueryAsync<
+                        Models.MerchRequest, Models.MerchStatus, Models.MerchPack, Models.MerchType, Models.Sku, GiveOutMerchRequest>(
+                        commandDefinition,
+                        (merchRequest, status, pack, type, skus) => GiveOutMerchRequest.Create(
+                            Employee.Create(Email.Create(merchRequest.EmployeeEmail)),
+                            new RequestStatus(status.Id, status.Name),
+                            new MerchPack(
+                                new MerchType(type.Id, type.Name),
+                                new List<Sku>(),
+                                pack.CanBeReissued,
+                                pack.CanBeReissuedAfterDays),
+                            merchRequest.CreateDate,
+                            merchRequest.IssueDate
+                            )));
 
-        public async Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeIdAsync(string employeeEmail, CancellationToken cancellationToken = default)
-        {
-            //    const string sql = @"
-            //        SELECT
-            //            merch_requests.id,
-            //            merch_requests.employee_id,
-            //            merch_requests.merch_type_id,
-            //            merch_requests.merch_status_id,
-            //            merch_requests.issue_date,
-            //            merch_statuses.id,
-            //            merch_statuses.name,
-            //            merch_types.id,
-            //            merch_types.name
-            //        FROM merch_requests      
-            //        INNER JOIN merch_types on merch_requests.merch_type_id = merch_types.id
-            //        INNER JOIN merch_statuses on merch_requests.merch_status_id = merch_statuses.id
-            //        WHERE merch_requests.employee_id = @EmployeeId;";
 
-            //    var parameters = new
-            //    {
-            //        EmployeeId = employeeId
-            //    };
 
-            //    var commandDefinition = new CommandDefinition(
-            //        sql,
-            //        parameters: parameters,
-            //        commandTimeout: Timeout,
-            //        cancellationToken: cancellationToken);
-
-            //    var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-
-            //    var merchRequests = await connection.QueryAsync<Models.MerchRequest, Models.MerchStatus, Models.MerchType, GiveOutMerchRequest>(commandDefinition,
-            //        (merchRequest, statusType, merchType) =>
-            //            new GiveOutMerchRequest(
-            //                merchRequest.EmployeeId,
-            //                new MerchType(merchType.Id, merchType.Name),
-            //                new RequestStatus(statusType.Id, statusType.Name),
-            //                merchRequest.IssueDate));
-
-            //    var result = merchRequests.ToList();
-
-            //    foreach (var merchRequest in result)
-            //    {
-            //        var subSql = $@"
-            //            SELECT
-            //                items.id,
-            //                items.merch_type_id,
-            //                items.name
-            //            FROM items      
-            //            WHERE items.merch_type_id = {merchRequest.MerchType.Id};";
-
-            //        var definition = new CommandDefinition(
-            //            subSql,
-            //            commandTimeout: Timeout,
-            //            cancellationToken: cancellationToken);
-
-            //        var items = await connection.QueryAsync<Models.Item>(definition);
-            //        merchRequest.LoadMerchPack(items.Select(x => new Item(x.MerchTypeId, x.Name)));
-
-            //        _changeTracker.Track(merchRequest);
-            //    }
-
-            //    return result;
-
-            throw new Exception();
+            return result.ToList();
         }
     }
 }

@@ -25,6 +25,6 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
         /// <param name="employeeEmail">Идентификатор/Email сотрудника</param>
         /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
         /// <returns>Возвращает список выданных мерчей сотруднику</returns>
-        Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeIdAsync(string employeeEmail, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeEmailAsync(string employeeEmail, CancellationToken cancellationToken = default);
     }
 }

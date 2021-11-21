@@ -10,11 +10,11 @@ namespace MerchApi.Migrator.Migrations
             Execute.Sql(@"
                 CREATE TABLE IF NOT EXISTS merch_requests(
                     id serial NOT NULL,
-                    merch_status_id integer NOT NULL,
+                    request_status_id integer NOT NULL,
                     employee_email varchar NOT NULL,
                     merch_pack_id integer NOT NULL,
-                    create_date time without time zone NOT NULL,
-                    issue_date time without time zone,
+                    create_date timestamp without time zone NOT NULL,
+                    issue_date timestamp without time zone,
                     PRIMARY KEY (id));"
             );
         }

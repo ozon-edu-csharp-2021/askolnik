@@ -14,7 +14,7 @@ namespace MerchApi.Domain.Tests
         public void Create_GiveOutMerchRequest_Success()
         {
             //Arrange 
-            var employee = new Employee(Email.Create("test@test.ru"));
+            var employee = Employee.Create(Email.Create("test@test.ru"));
             var merchType = MerchType.WelcomePack;
             var request = GiveOutMerchRequest.Create(
              employee,

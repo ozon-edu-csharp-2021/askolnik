@@ -5,3 +5,11 @@ VALUES (10, 'WelcomePack'), (20, 'ConferenceListenerPack'), (30, 'ConferenceSpea
 INSERT INTO merch_request_statuses(id, name)
 VALUES (0, 'Draft'), (1, 'Created'), (2, 'InWork'), (3, 'Done'), (4, 'Decline');
 
+INSERT INTO merch_packes(merch_type_id, can_be_reissued, can_be_reissued_after_days)
+VALUES (10, false, null), (20, true, 1),(30, true, 10),(40, false, null),(50, true, 365)
+
+INSERT INTO skus(merch_pack_id, value)
+VALUES (1, 10), (1, 11), (1, 12), (2, 20), (2, 21), (3, 30), (4, 40), (5, 50), (5, 51), (5, 52), (5, 53)
+
+INSERT INTO merch_requests(request_status_id, employee_email, merch_pack_id, create_date, issue_date)
+VALUES (1, 'test@test.ru', 1, CURRENT_DATE, null), (1, 'test2@test.ru', 2, CURRENT_DATE, null)

@@ -30,7 +30,7 @@ namespace MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         {
             _logger.LogDebug($"[{nameof(GetMerchRequestInfoQueryHandler)}] Проверка, выдавался ли мерч");
 
-            var issuedMerches = await _merchRepository.FindByEmployeeIdAsync(request.EmployeeEmail, cancellationToken);
+            var issuedMerches = await _merchRepository.FindByEmployeeEmailAsync(request.EmployeeEmail, cancellationToken);
 
             if (issuedMerches is null || issuedMerches.Count == 0)
             {
