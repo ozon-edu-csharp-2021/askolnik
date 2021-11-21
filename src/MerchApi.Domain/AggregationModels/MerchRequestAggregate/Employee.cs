@@ -5,22 +5,22 @@ using MerchApi.Domain.SharedKernel.Models;
 namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
 {
     /// <summary>
-    /// Сотрудник
+    /// Информация о сотруднике
     /// </summary>
     public class Employee : ValueObject
     {
-        public int Id { get; }
+        /// <summary>
+        /// Адрес электронной почты. В нашем случае для упрощения выступает идентификатором сотрудника
+        /// </summary>
         public Email Email { get; }
 
-        public Employee(int id, Email email)
+        public Employee(Email email)
         {
-            Id = id;
             Email = email;
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Id;
             yield return Email;
         }
     }

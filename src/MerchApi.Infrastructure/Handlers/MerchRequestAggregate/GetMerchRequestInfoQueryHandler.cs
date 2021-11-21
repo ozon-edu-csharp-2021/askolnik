@@ -30,11 +30,11 @@ namespace MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         {
             _logger.LogDebug($"[{nameof(GetMerchRequestInfoQueryHandler)}] Проверка, выдавался ли мерч");
 
-            var issuedMerches = await _merchRepository.FindByEmployeeIdAsync(request.EmployeeId, cancellationToken);
+            var issuedMerches = await _merchRepository.FindByEmployeeIdAsync(request.EmployeeEmail, cancellationToken);
 
             if (issuedMerches is null || issuedMerches.Count == 0)
             {
-                throw new Exception($"Not found for EmployeeId = '{request.EmployeeId}'");
+                throw new Exception($"Not found for EmployeeEmail = '{request.EmployeeEmail}'");
             }
 
             var response = new GetMerchRequestInfoResponse();
@@ -43,7 +43,7 @@ namespace MerchApi.Infrastructure.Handlers.MerchRequestAggregate
             {
                 if (Enum.TryParse<Http.Enums.MerchType>(item.MerchPack.MerchType.Name, out var merchType))
                 {
-                    response.IssuedMerchs.Add(new MerchIssueInfo(item.EmployeeId, item.IssueDate, merchType));
+                    response.IssuedMerchs.Add(new MerchIssueInfo(item.IssueDate, merchType));
                 }
                 else
                 {

@@ -20,7 +20,7 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
         /// <summary>
         /// Сотрудник
         /// </summary>
-        public int EmployeeId { get; private set; }
+        public Employee Employee { get; private set; }
 
         /// <summary>
         /// Дата создания заявки
@@ -38,13 +38,13 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
         public MerchPack MerchPack { get; private set; }
 
         private GiveOutMerchRequest(
-            int employeeId,
+            Employee employee,
             RequestStatus requestStatus,
             MerchPack merchPack,
             DateTime createdDate,
             DateTime? issueDate = null)
         {
-            EmployeeId = employeeId;
+            Employee = employee;
             MerchPack = merchPack;
             CreatedDate = createdDate;
             IssueDate = issueDate;
@@ -52,18 +52,18 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
         }
 
         public static GiveOutMerchRequest Create(
-            int employeeId,
+            Employee employee,
             RequestStatus requestStatus,
             MerchPack merchPack,
             DateTime createdDate,
             DateTime? issueDate = null)
         {
-            if (employeeId <= 0)
+            if (string.IsNullOrEmpty(employee.Email.Value))
             {
-                throw new GiveOutMerchException("EmployeeId is invalid!");
+                throw new GiveOutMerchException("Email is invalid!");
             }
 
-            return new GiveOutMerchRequest(employeeId, requestStatus, merchPack, createdDate, issueDate);
+            return new GiveOutMerchRequest(employee, requestStatus, merchPack, createdDate, issueDate);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
                 Status = RequestStatus.Done;
                 IssueDate = issueDate;
 
-                AddDomainEvent(new MerchRequestGivenOutDomainEvent(EmployeeId, MerchPack));
+                AddDomainEvent(new MerchRequestGivenOutDomainEvent(Employee, MerchPack));
             }
             else
             {

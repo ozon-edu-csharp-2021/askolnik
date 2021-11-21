@@ -15,20 +15,20 @@ namespace MerchApi.Infrastructure.Stubs
             return Task.FromResult(itemToCreate);
         }
 
-        public Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeIdAsync(int employeeId, CancellationToken cancellationToken = default)
+        public Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeIdAsync(string employeeEmail, CancellationToken cancellationToken = default)
         {
             var response = new List<GiveOutMerchRequest>();
 
-            switch (employeeId)
+            switch (employeeEmail)
             {
-                case 1:
+                case "test@test.ru":
                     var type1 = MerchType.WelcomePack;
-                    response.Add(GiveOutMerchRequest.Create(employeeId, RequestStatus.Created, new MerchPack(type1, GetSkus(type1)), DateTime.UtcNow));
+                    response.Add(GiveOutMerchRequest.Create(new Employee(Email.Create(employeeEmail)), RequestStatus.Created, new MerchPack(type1, GetSkus(type1)), DateTime.UtcNow));
                     break;
 
-                case 2:
+                case "test2@test.ru":
                     var type2 = MerchType.VeteranPack;
-                    response.Add(GiveOutMerchRequest.Create(employeeId, RequestStatus.Created, new MerchPack(type2, GetSkus(type2)), DateTime.UtcNow));
+                    response.Add(GiveOutMerchRequest.Create(new Employee(Email.Create(employeeEmail)), RequestStatus.Created, new MerchPack(type2, GetSkus(type2)), DateTime.UtcNow));
                     break;
             }
 

@@ -6,11 +6,11 @@ namespace MerchApi.Infrastructure.Queries.MerchRequestAggregate
 {
     public class GetMerchRequestInfoQuery : IRequest<GetMerchRequestInfoResponse>
     {
-        public int EmployeeId { get; }
+        public string EmployeeEmail { get; }
 
-        public GetMerchRequestInfoQuery(int employeeId)
+        public GetMerchRequestInfoQuery(string employeeEmail)
         {
-            EmployeeId = employeeId;
+            EmployeeEmail = employeeEmail;
         }
     }
 }

@@ -14,15 +14,16 @@ namespace MerchApi.Domain.Tests
         public void Create_GiveOutMerchRequest_Success()
         {
             //Arrange 
+            var employee = new Employee(Email.Create("test@test.ru"));
             var merchType = MerchType.WelcomePack;
             var request = GiveOutMerchRequest.Create(
-             1,
+             employee,
              RequestStatus.Created,
              new MerchPack(merchType, GetSkus(merchType)),
              DateTime.UtcNow);
 
             //Assert
-            Assert.Equal(1, request.EmployeeId);
+            Assert.Equal(employee, request.Employee);
             Assert.Equal(MerchType.WelcomePack, request.MerchPack.MerchType);
             Assert.Equal(RequestStatus.Created, request.Status);
         }

@@ -1,17 +1,18 @@
 ﻿using MerchApi.Domain.AggregationModels.MerchPackAggregate;
+using MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using MerchApi.Domain.SharedKernel.Models;
 
 namespace MerchApi.Domain.Events
 {
     public class MerchRequestGivenOutDomainEvent : BaseDomainEvent
     {
-        public MerchRequestGivenOutDomainEvent(int employeeId, MerchPack merchPack)
+        public MerchRequestGivenOutDomainEvent(Employee employee, MerchPack merchPack)
         {
-            EmployeeId = employeeId;
+            Employee = employee;
             MerchPack = merchPack;
         }
 
-        public int EmployeeId { get; }
+        public Employee Employee { get; }
         public MerchPack MerchPack { get; }
     }
 }

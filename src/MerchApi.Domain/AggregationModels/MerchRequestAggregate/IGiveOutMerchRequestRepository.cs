@@ -22,9 +22,9 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
         /// <summary>
         /// Найти выданные мерчи по сотруднику
         /// </summary>
-        /// <param name="employeeId">Идентификатор сотрудника</param>
+        /// <param name="employeeEmail">Идентификатор/Email сотрудника</param>
         /// <param name="cancellationToken">Токен для отмены операции. <see cref="CancellationToken"/></param>
         /// <returns>Возвращает список выданных мерчей сотруднику</returns>
-        Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeIdAsync(int employeeId, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeIdAsync(string employeeEmail, CancellationToken cancellationToken = default);
     }
 }
