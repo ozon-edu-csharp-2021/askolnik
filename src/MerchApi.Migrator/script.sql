@@ -1,12 +1,7 @@
 ﻿-- Для инициализации
-INSERT INTO merch_requests(id, employee_id, merch_type_id, merch_status_id, issue_date)
-VALUES (1, 1, 10, 1, null);
-
 INSERT INTO merch_types(id, name)
-VALUES (10, 'WelcomePack'), (20, 'ConferenceListenerPack');
+VALUES (10, 'WelcomePack'), (20, 'ConferenceListenerPack'), (30, 'ConferenceSpeakerPack'), (40, 'ProbationPeriodEndingPack'), (50, 'VeteranPack');
 
-INSERT INTO merch_statuses(id, name)
-VALUES (0, 'Draft'), (1, 'Created'), (2, 'InWork'), (3, 'Done');
+INSERT INTO merch_request_statuses(id, name)
+VALUES (0, 'Draft'), (1, 'Created'), (2, 'InWork'), (3, 'Done'), (4, 'Decline');
 
-INSERT INTO items(id, name, merch_type_id)
-VALUES (1, 'Pen', 10);

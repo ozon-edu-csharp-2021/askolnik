@@ -3,12 +3,12 @@
 namespace MerchApi.Migrator.Migrations
 {
     [Migration(2)]
-    public class MerchStatusTable : Migration
+    public class MerchRequestStatusTable : Migration
     {
         public override void Up()
         {
             Execute.Sql(@"
-                CREATE TABLE IF NOT EXISTS merch_statuses(
+                CREATE TABLE IF NOT EXISTS merch_request_statuses(
                     id serial NOT NULL,
                     name character varying NOT NULL,
                     PRIMARY KEY (id));"
@@ -17,7 +17,7 @@ namespace MerchApi.Migrator.Migrations
 
         public override void Down()
         {
-            Execute.Sql("DROP TABLE IF EXISTS merch_statuses;");
+            Execute.Sql("DROP TABLE IF EXISTS merch_request_statuses;");
         }
     }
 }
