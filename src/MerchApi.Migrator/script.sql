@@ -13,3 +13,17 @@ VALUES (1, 10), (1, 11), (1, 12), (2, 20), (2, 21), (3, 30), (4, 40), (5, 50), (
 
 INSERT INTO merch_requests(request_status_id, employee_email, merch_pack_id, create_date, issue_date)
 VALUES (1, 'test@test.ru', 1, CURRENT_DATE, null), (1, 'test2@test.ru', 2, CURRENT_DATE, null)
+
+
+
+SELECT mr.id, mr.request_status_id, mr.employee_email, mr.merch_pack_id, mr.create_date, mr.issue_date,
+		rs.id, rs.name,
+		mp.id, mp.merch_type_id, mp.can_be_reissued, mp.can_be_reissued_after_days,
+		mt.id, mt.name,
+		sk.id, sk.value
+FROM merch_requests mr
+INNER JOIN merch_request_statuses rs ON rs.id = mr.request_status_id
+INNER JOIN merch_packes mp ON mp.id = mr.merch_pack_id
+INNER JOIN merch_types mt ON mt.id = mp.merch_type_id
+INNER JOIN skus sk ON sk.merch_pack_id = mp.id
+WHERE mr.employee_email = 'test@test.ru';
