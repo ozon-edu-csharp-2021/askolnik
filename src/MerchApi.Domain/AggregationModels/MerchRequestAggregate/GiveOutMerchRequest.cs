@@ -61,11 +61,6 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
             DateTime createdDate,
             DateTime? issueDate = null)
         {
-            if (id <= 0)
-            {
-                throw new GiveOutMerchException("Id is invalid!");
-            }
-
             if (string.IsNullOrEmpty(employee.Email.Value))
             {
                 throw new GiveOutMerchException("Email is invalid!");

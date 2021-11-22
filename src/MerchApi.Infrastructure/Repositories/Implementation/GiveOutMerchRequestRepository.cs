@@ -28,34 +28,37 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
             _queryExecutor = queryExecutor;
         }
 
-        //TODO:
-        public async Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken = default)
+        public async Task<int> CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken = default)
         {
-            throw new Exception();
-            //const string sql = @"
-            //    INSERT INTO skus (id, name, item_type_id, clothing_size)
-            //    VALUES (@SkuId, @Name, @ItemTypeId, @ClothingSize);
-            //    INSERT INTO stocks (sku_id, quantity, minimal_quantity)
-            //    VALUES (@SkuId, @Quantity, @MinimalQuantity);";
+            const string sql = @"
+                INSERT INTO merch_requests 
+                    (request_status_id, employee_email, merch_pack_id, create_date, issue_date)
+                VALUES (@RequestStatusId, @EmployeeEmail, @MerchPackId, @CreateDate, null)
+                RETURNING id;";
 
-            //var parameters = new
-            //{
-            //    SkuId = itemToCreate.Sku.Value,
-            //    Name = itemToCreate.Name.Value,
-            //    ItemTypeId = itemToCreate.ItemType.Type.Id,
-            //    ClothingSize = itemToCreate.ClothingSize?.Id,
-            //    Quantity = itemToCreate.Quantity.Value,
-            //    MinimalQuantity = itemToCreate.MinimalQuantity.Value
-            //};
-            //var commandDefinition = new CommandDefinition(
-            //    sql,
-            //    parameters: parameters,
-            //    commandTimeout: Timeout,
-            //    cancellationToken: cancellationToken);
-            //var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-            //await connection.ExecuteAsync(commandDefinition);
-            //return await _queryExecutor.Execute(itemToCreate, () => connection.ExecuteAsync(commandDefinition));
+            var parameters = new
+            {
+                RequestStatusId = itemToCreate.Status.Id,
+                EmployeeEmail = itemToCreate.Employee.Email.Value,
+                MerchPackId = itemToCreate.MerchPack.Id,
+                CreateDate = itemToCreate.CreatedDate
+            };
 
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+
+            await _queryExecutor.Execute(itemToCreate, async () =>
+            {
+                var r = await connection.ExecuteAsync(commandDefinition);
+                itemToCreate.SetId(r);
+            });
+
+            return itemToCreate.Id;
         }
 
         public async Task<IReadOnlyList<GiveOutMerchRequest>> FindByEmployeeEmailAsync(string employeeEmail, CancellationToken cancellationToken = default)

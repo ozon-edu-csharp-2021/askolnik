@@ -1,5 +1,6 @@
 using MediatR;
 
+using MerchApi.Domain.AggregationModels.MerchPackAggregate;
 using MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 using MerchApi.Domain.SharedKernel.Interfaces;
 using MerchApi.GrpcServices;
@@ -53,6 +54,7 @@ namespace MerchApi
         {
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             services.AddScoped<IGiveOutMerchRequestRepository, GiveOutMerchRequestRepository>();
+            services.AddScoped<IMerchPackRepository, MerchPackRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

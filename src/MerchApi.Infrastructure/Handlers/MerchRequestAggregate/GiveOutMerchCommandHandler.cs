@@ -18,16 +18,19 @@ namespace MerchApi.Infrastructure.Handlers.MerchRequestAggregate
     public class GiveOutMerchCommandHandler : IRequestHandler<GiveOutMerchCommand>
     {
         private readonly ILogger<GiveOutMerchCommandHandler> _logger;
-        private readonly IGiveOutMerchRequestRepository _merchRepository;
+        private readonly IGiveOutMerchRequestRepository _giveOutMerchRepository;
+        private readonly IMerchPackRepository _merchPackRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public GiveOutMerchCommandHandler(
             ILogger<GiveOutMerchCommandHandler> logger,
             IGiveOutMerchRequestRepository merchRepository,
+            IMerchPackRepository merchPackRepository,
             IUnitOfWork unitOfWork)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _merchRepository = merchRepository ?? throw new ArgumentNullException(nameof(merchRepository));
+            _giveOutMerchRepository = merchRepository ?? throw new ArgumentNullException(nameof(merchRepository));
+            _merchPackRepository = merchPackRepository ?? throw new ArgumentNullException(nameof(merchPackRepository));
             _unitOfWork = unitOfWork;
         }
 
@@ -40,34 +43,51 @@ namespace MerchApi.Infrastructure.Handlers.MerchRequestAggregate
         public async Task<Unit> Handle(GiveOutMerchCommand command, CancellationToken cancellationToken)
         {
             _logger.LogDebug($"[{nameof(GiveOutMerchCommandHandler)}] Обработка запроса на выдачу мерча");
+            await _unitOfWork.StartTransaction(cancellationToken);
 
-            //var issuedMerches = await _merchRepository.FindByEmployeeIdAsync(command.Request.EmployeeId, cancellationToken);
-            //var merchType = GetMerchType(command.Request);
+            var issuedMerches = await _giveOutMerchRepository.FindByEmployeeEmailAsync(command.Request.EmployeeEmail, cancellationToken);
+            var merchType = GetMerchType(command.Request.MerchType);
 
-            //foreach (var issuedMerch in issuedMerches)
-            //{
-            //    if (issuedMerch.MerchPack.MerchType == merchType)
-            //    {
-            //        throw new ArgumentException($"Невозможно повторно выдать мерч типа = '{merchType.Name}'");
-            //    }
-            //}
+            foreach (var issuedMerch in issuedMerches)
+            {
+                CheckMerchRequest(merchType, issuedMerch);
+            }
 
-            //var giveOutMerchRequest = GiveOutMerchRequest.Create(command.Request.EmployeeId, RequestStatus.Created, new MerchPack(merchType, GetSkus(merchType)), DateTime.UtcNow);
+            var merhPack = await _merchPackRepository.GetMerchPackByMerchType(merchType, cancellationToken);
 
-            //await _merchRepository.CreateAsync(giveOutMerchRequest, cancellationToken);
-            //await _unitOfWork.SaveChangesAsync(cancellationToken);
+            var newGiveOutMerchRequest =
+                GiveOutMerchRequest.Create(
+                    0,
+                    Employee.Create(Email.Create(command.Request.EmployeeEmail)),
+                    RequestStatus.Created,
+                    merhPack,
+                    DateTime.UtcNow);
+
+            await _giveOutMerchRepository.CreateAsync(newGiveOutMerchRequest, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            // Забронировать мерч в stockAPI
+            // Выдать мерч
+            // Обновить заявку в БД
+            // Отправить письмо
 
             return Unit.Value;
         }
 
-        private IReadOnlyCollection<Sku> GetSkus(MerchType merchType)
+        private static void CheckMerchRequest(MerchType merchType, GiveOutMerchRequest issuedMerch)
         {
-            throw new NotImplementedException();
+            if (issuedMerch.MerchPack.MerchType == merchType
+                                && issuedMerch.Status == RequestStatus.Done
+                                && issuedMerch.MerchPack.CanBeReissued
+                                && issuedMerch.MerchPack.CanBeReissuedAfterDays < (int)(issuedMerch.IssueDate.Value - DateTime.UtcNow).TotalDays)
+            {
+                throw new ArgumentException($"Невозможно повторно выдать мерч типа = '{merchType.Name}'");
+            }
         }
 
-        private static MerchType GetMerchType(Http.Requests.GiveOutMerchRequest request)
+        private static MerchType GetMerchType(Http.Enums.MerchType merchType)
         {
-            return request.MerchType switch
+            return merchType switch
             {
                 Http.Enums.MerchType.WelcomePack => MerchType.WelcomePack,
                 Http.Enums.MerchType.ConferenceListenerPack => MerchType.ConferenceListenerPack,

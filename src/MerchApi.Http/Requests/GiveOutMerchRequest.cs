@@ -1,4 +1,6 @@
-﻿using MerchApi.Http.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+
+using MerchApi.Http.Enums;
 
 namespace MerchApi.Http.Requests
 {
@@ -7,10 +9,11 @@ namespace MerchApi.Http.Requests
     /// </summary>
     public record GiveOutMerchRequest
     {
-        public int EmployeeId { get; init; }
-
+        [EmailAddress]
+        [Required]
         public string EmployeeEmail { get; init; }
 
+        [Required]
         public MerchType MerchType { get; init; }
     }
 }

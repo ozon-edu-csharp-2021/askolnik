@@ -14,10 +14,10 @@ namespace MerchApi.Domain.AggregationModels.MerchRequestAggregate
         /// <summary>
         /// Создать заявку на выдачу мерча сотруднику
         /// </summary>
-        /// <param name="request">Модель запроса</param>
+        /// <param name="itemToCreate">Заявка</param>
         /// <param name="cancellationToken">Токен для отмены операции</param>
-        /// <returns>Возвращает созданную заявку</returns>
-        Task<GiveOutMerchRequest> CreateAsync(GiveOutMerchRequest request, CancellationToken cancellationToken);
+        /// <returns>Возвращает id заявки</returns>
+        Task<int> CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Найти выданные мерчи по сотруднику

@@ -10,17 +10,16 @@ namespace MerchApi.Domain.SharedKernel.Models
         int? _requestedHashCode;
         public virtual int Id { get; protected set; }
 
-        private List<INotification> _domainEvents;
+        private readonly List<INotification> _domainEvents = new();
 
         protected Entity()
         {
         }
 
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
 
         public void AddDomainEvent(INotification eventItem)
         {
-            _domainEvents ??= new List<INotification>();
             _domainEvents.Add(eventItem);
         }
 
@@ -32,6 +31,14 @@ namespace MerchApi.Domain.SharedKernel.Models
         public void ClearDomainEvents()
         {
             _domainEvents?.Clear();
+        }
+
+        public void SetId(int id)
+        {
+            if (id > 0)
+            {
+                Id = id;
+            }
         }
 
         public bool IsTransient()

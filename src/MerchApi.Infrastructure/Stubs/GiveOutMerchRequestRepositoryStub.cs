@@ -71,5 +71,10 @@ namespace MerchApi.Infrastructure.Stubs
 
             return skus;
         }
+
+        Task<int> IGiveOutMerchRequestRepository.CreateAsync(GiveOutMerchRequest itemToCreate, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
