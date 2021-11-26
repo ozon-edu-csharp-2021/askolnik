@@ -29,8 +29,9 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
         public async Task<MerchPack> GetMerchPackByMerchType(MerchType merchType, CancellationToken cancellationToken)
         {
             const string sql = @"
-                    Select *
-                    FROM merch_packes 
+                    Select merch_packes.id, merch_packes.merch_type_id, 
+                            merch_packes.can_be_reissued, merch_packes.can_be_reissued_after_days
+                    FROM merch_packes
                     WHERE merch_packes.merch_type_id = @MerchTypeId;";
 
             var parameters = new
@@ -48,7 +49,7 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
             var merchPack = connection.QueryFirst<Models.MerchPack>(commandDefinition);
 
             const string sql2 = @"
-                    Select *
+                    Select skus.id, skus.merch_pack_id, skus.value
                     FROM skus 
                     WHERE skus.merch_pack_id = @MerchPackId;";
 
@@ -69,8 +70,7 @@ namespace MerchApi.Infrastructure.Repositories.Implementation
                 merchType,
                 new List<Sku>(skus.Select(x => Sku.Create(x.Value))),
                 merchPack.CanBeReissued,
-                merchPack.MerchTypeId
-                );
+                merchPack.MerchTypeId);
 
             result.SetId(merchPack.Id);
 

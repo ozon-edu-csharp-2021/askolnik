@@ -76,10 +76,10 @@ namespace MerchApi.Infrastructure.Handlers.MerchRequestAggregate
 
         private static void CheckMerchRequest(MerchType merchType, GiveOutMerchRequest issuedMerch)
         {
-            if (issuedMerch.MerchPack.MerchType == merchType
-                                && issuedMerch.Status == RequestStatus.Done
-                                && issuedMerch.MerchPack.CanBeReissued
-                                && issuedMerch.MerchPack.CanBeReissuedAfterDays < (int)(issuedMerch.IssueDate.Value - DateTime.UtcNow).TotalDays)
+            if (Equals(merchType, issuedMerch.MerchPack.MerchType)
+                && Equals(issuedMerch.Status, RequestStatus.Done)
+                && issuedMerch.MerchPack.CanBeReissued
+                && issuedMerch.MerchPack.CanBeReissuedAfterDays < (int)(issuedMerch.IssueDate.Value - DateTime.UtcNow).TotalDays)
             {
                 throw new ArgumentException($"Невозможно повторно выдать мерч типа = '{merchType.Name}'");
             }
