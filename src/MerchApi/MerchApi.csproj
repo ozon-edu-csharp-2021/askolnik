@@ -35,6 +35,7 @@
 	  <ProjectReference Include="..\MerchApi.Grpc\MerchApi.Grpc.csproj" />
 	  <ProjectReference Include="..\MerchApi.Http\MerchApi.Http.csproj" />
 	  <ProjectReference Include="..\MerchApi.Infrastructure\MerchApi.Infrastructure.csproj" />
+	  <ProjectReference Include="..\MerchApi.Migrator\MerchApi.Migrator.csproj" />
 	</ItemGroup>
 
 </Project>

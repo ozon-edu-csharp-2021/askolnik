@@ -2,9 +2,8 @@
 using System.IO;
 using System.Reflection;
 
-using MediatR;
-
 using MerchApi.Infrastructure.Filters;
+using MerchApi.Infrastructure.Interceptors;
 using MerchApi.Infrastructure.StartupFilters;
 using MerchApi.Infrastructure.Swagger;
 
@@ -20,18 +19,41 @@ namespace MerchApi.Infrastructure.Extensions
     /// </summary>
     public static class HostBuilderExtensions
     {
-        /// <summary>
-        /// Настройка инфраструктуры сервиса
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public static IHostBuilder AddInfrastructure(this IHostBuilder builder)
+        public static IHostBuilder ConfigureMicroserviceInfrastructure(this IHostBuilder builder)
+        {
+            return builder
+                .ConfigureHttp()
+                .ConfigureGrpc()
+                .ConfigureSwagger();
+        }
+
+        public static IHostBuilder ConfigureHttp(this IHostBuilder builder)
+        {
+            builder.ConfigureServices(services =>
+            {
+                services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
+                services.AddSingleton<IStartupFilter, HttpStartupFilter>();
+            });
+
+            return builder;
+        }
+
+        public static IHostBuilder ConfigureGrpc(this IHostBuilder builder)
+        {
+            builder.ConfigureServices(services =>
+            {
+                services.AddGrpc(options => options.Interceptors.Add<GrpcLoggingInterceptor>());
+            });
+
+            return builder;
+        }
+
+        public static IHostBuilder ConfigureSwagger(this IHostBuilder builder)
         {
             builder.ConfigureServices(services =>
             {
                 var assembly = Assembly.GetExecutingAssembly();
-                // Add filters
-                services.AddSingleton<IStartupFilter, TerminalStartupFilter>();
+
                 services.AddSingleton<IStartupFilter, SwaggerStartupFilter>();
 
                 services.AddSwaggerGen(c =>
@@ -54,21 +76,6 @@ namespace MerchApi.Infrastructure.Extensions
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     c.IncludeXmlComments(xmlPath);
                 });
-            });
-
-            return builder;
-        }
-
-        /// <summary>
-        /// Добавление глобального фильтра прерываний
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public static IHostBuilder AddGlobalExceptionFilter(this IHostBuilder builder)
-        {
-            builder.ConfigureServices(services =>
-            {
-                services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
             });
 
             return builder;

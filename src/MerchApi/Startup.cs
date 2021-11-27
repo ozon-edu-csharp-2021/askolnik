@@ -1,14 +1,22 @@
-using MerchApi.Domain.AggregationModels.MerchAggregate;
+using MediatR;
+
+using MerchApi.Domain.AggregationModels.MerchPackAggregate;
+using MerchApi.Domain.AggregationModels.MerchRequestAggregate;
+using MerchApi.Domain.SharedKernel.Interfaces;
 using MerchApi.GrpcServices;
+using MerchApi.Infrastructure.Configuration;
 using MerchApi.Infrastructure.Extensions;
-using MerchApi.Infrastructure.Interceptors;
-using MerchApi.Infrastructure.Stubs;
+using MerchApi.Infrastructure.Repositories.Implementation;
+using MerchApi.Infrastructure.Repositories.Infrastructure;
+using MerchApi.Infrastructure.Repositories.Infrastructure.Interfaces;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using Npgsql;
 
 namespace MerchApi
 {
@@ -23,10 +31,30 @@ namespace MerchApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR();
-            services.AddSingleton<IGiveOutMerchRequestRepository, GiveOutMerchRequestRepositoryStub>();
+            AddMediator(services);
+            AddDatabaseComponents(services);
+            AddRepositories(services);
+        }
 
-            services.AddGrpc(options => options.Interceptors.Add<GrpcLoggingInterceptor>());
+        private static void AddMediator(IServiceCollection services)
+        {
+            services.AddMediatR();
+        }
+
+        private void AddDatabaseComponents(IServiceCollection services)
+        {
+            services.Configure<DatabaseConnectionOptions>(Configuration.GetSection(nameof(DatabaseConnectionOptions)));
+            services.AddScoped<IDbConnectionFactory<NpgsqlConnection>, NpgsqlConnectionFactory>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IChangeTracker, ChangeTracker>();
+            services.AddScoped<IQueryExecutor, QueryExecutor>();
+        }
+
+        private void AddRepositories(IServiceCollection services)
+        {
+            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+            services.AddScoped<IGiveOutMerchRequestRepository, GiveOutMerchRequestRepository>();
+            services.AddScoped<IMerchPackRepository, MerchPackRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -36,7 +64,6 @@ namespace MerchApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<MerchApiGrpcService>();

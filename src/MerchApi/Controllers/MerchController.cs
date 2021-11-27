@@ -8,8 +8,8 @@ using MediatR;
 
 using MerchApi.Http.Requests;
 using MerchApi.Http.Responses;
-using MerchApi.Infrastructure.Commands.MerchAggregate;
-using MerchApi.Infrastructure.Queries.MerchAggregate;
+using MerchApi.Infrastructure.Commands.MerchRequestAggregate;
+using MerchApi.Infrastructure.Queries.MerchRequestAggregate;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -67,12 +67,12 @@ namespace MerchApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        [HttpGet("{employeeId:int}")]
-        public async Task<ActionResult<GetMerchRequestInfoResponse>> GetMerchIssueInfo([FromRoute][Required] int employeeId, CancellationToken token)
+        [HttpGet]
+        public async Task<ActionResult<GetMerchRequestInfoResponse>> GetMerchIssueInfo([FromQuery][Required] string email, CancellationToken token)
         {
-            _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча для сотрудника = '{employeeId}'");
+            _logger.LogInformation($"Поступил запрос на получение информации о выдаче мерча для сотрудника = '{email}'");
 
-            var query = new GetMerchRequestInfoQuery(employeeId);
+            var query = new GetMerchRequestInfoQuery(email);
             var response = await _mediator.Send(query, token);
 
             return StatusCode((int)HttpStatusCode.OK, response);

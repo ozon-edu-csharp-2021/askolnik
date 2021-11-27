@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
-using MerchApi.Domain.AggregationModels.MerchAggregate;
+using MerchApi.Domain.AggregationModels.MerchPackAggregate;
+using MerchApi.Domain.AggregationModels.MerchRequestAggregate;
 
 using Xunit;
 
@@ -12,50 +14,50 @@ namespace MerchApi.Domain.Tests
         public void Create_GiveOutMerchRequest_Success()
         {
             //Arrange 
-            var request = new GiveOutMerchRequest(1, MerchType.WelcomePack);
+            var employee = Employee.Create(Email.Create("test@test.ru"));
+            var merchType = MerchType.WelcomePack;
+            var request = GiveOutMerchRequest.Create(1,
+             employee,
+             RequestStatus.Created,
+             new MerchPack(merchType, GetSkus(merchType)),
+             DateTime.UtcNow);
 
             //Assert
-            Assert.Equal(1, request.EmployeeId);
-            Assert.Equal(MerchType.WelcomePack, request.MerchType);
-            Assert.Equal(RequestStatus.Draft, request.Status);
-        }
-
-        [Fact]
-        public void Register_GiveOutMerchRequest_Success()
-        {
-            //Arrange 
-            var request = new GiveOutMerchRequest(1, MerchType.WelcomePack);
-
-            // Act
-            request.Register();
-
-            //Assert
+            Assert.Equal(employee, request.Employee);
+            Assert.Equal(MerchType.WelcomePack, request.MerchPack.MerchType);
             Assert.Equal(RequestStatus.Created, request.Status);
         }
 
-        [Fact]
-        public void DoubleRegister_GiveOutMerchRequest_Fail()
+        private static List<Sku> GetSkus(MerchType merchType)
         {
-            //Arrange 
-            var request = new GiveOutMerchRequest(1, MerchType.WelcomePack);
+            var skus = new List<Sku>();
 
-            // Act
-            request.Register();
+            if (merchType == MerchType.WelcomePack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(1), Sku.Create(2) });
+            }
 
-            //Assert
-            Assert.Throws<Exception>(() => request.Register());
-        }
+            if (merchType == MerchType.ProbationPeriodEndingPack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(3) });
+            }
 
-        [Fact]
-        public void Create_GiveOutMerchRequest_WithInvalidEmployeeId_Fail()
-        {
-            Assert.Throws<Exception>(() => new GiveOutMerchRequest(-1, MerchType.WelcomePack));
-        }
+            if (merchType == MerchType.ConferenceListenerPack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(4), Sku.Create(5) });
+            }
 
-        [Fact]
-        public void Create_GiveOutMerchRequest_WithInvalidMerchType_Fail()
-        {
-            Assert.Throws<Exception>(() => new GiveOutMerchRequest(1, null));
+            if (merchType == MerchType.ConferenceSpeakerPack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(6), Sku.Create(7), Sku.Create(8) });
+            }
+
+            if (merchType == MerchType.VeteranPack)
+            {
+                skus.AddRange(new List<Sku>() { Sku.Create(9), Sku.Create(10) });
+            }
+
+            return skus;
         }
     }
 }
